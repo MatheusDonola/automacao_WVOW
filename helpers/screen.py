@@ -32,8 +32,6 @@ def find_exists(nome_img, region_key=None,
 
     return False
 
-    return False
-
 def find_image(nome_img, region_key=None, confidence=0.45):
     path = img_path(nome_img)
     region = REGIONS.get(region_key)

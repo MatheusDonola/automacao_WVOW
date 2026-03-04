@@ -11,7 +11,8 @@ REGIONS = {
     "march": (964, 684, 456, 269),
     "INIT": (560, 300, 780, 70),
     "safe_diamond": (1579, 33, 86, 65),
-    "serverc":(116, 30, 120, 106)
+    "serverc":(116, 30, 120, 106),
+    "verify":(204, 253, 109, 128)
 }
 
 COORDS = {
@@ -24,7 +25,7 @@ COORDS = {
 
 # ===== TEMPOS =====
 TEMPO_STOP = 7240 
-TEMPO_RESET = 450
+TEMPO_RESET = 450  #450 padrão
 
 # ===== COMPORTAMENTO =====
 ATAQUE_RAILGUN = True
