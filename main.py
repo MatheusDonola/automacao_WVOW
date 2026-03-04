@@ -1,5 +1,6 @@
 import pyautogui
 import time
+import random
 
 from core.state import STATE
 
@@ -15,8 +16,8 @@ from helpers.paths import assets_dir, cmd_path
 if __name__ == "__main__":
     print("------ INICIALIZANDO ------")
     time.sleep(3)
-    pyautogui.PAUSE = 0.6
-    pyautogui.FAILSAFE = True
+    pyautogui.PAUSE = 0.3
+    pyautogui.FAILSAFE = False
 
     while True:
         if tempo_estourou_stop():
@@ -29,4 +30,3 @@ if __name__ == "__main__":
         verify_and_execute()
         serverc_safety()
         find_and_click("march.png", region_key="march", confidence=0.30, tries=2)
-        time.sleep(0.5)

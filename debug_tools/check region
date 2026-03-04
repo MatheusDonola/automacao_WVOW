@@ -1,23 +1,35 @@
-import os
+import os, time
 import pyautogui
-import time
 
-REGIAO_TESTE = (489, 704, 246, 100)
-
-
+img = r"D:\VSCODE PASTAS\AutomacaoVow\assets\bsfuctpath\firelizard.png"
+REGIAO_TESTE = (470, 812, 243, 224)
+time.sleep(1)
 
 print("Imagem:", img)
 print("Existe?", os.path.exists(img))
+
+if not os.path.exists(img):
+    raise SystemExit("ERRO: caminho da imagem não existe. Corrija o 'img'.")
+
+size = os.path.getsize(img)
+print("Tamanho (bytes):", size)
+if size < 1000:
+    raise SystemExit("ERRO: arquivo muito pequeno/corrompido. Refaça a imagem.")
 
 time.sleep(3)
 
 shot = pyautogui.screenshot(region=REGIAO_TESTE)
 shot.save("debug_regiao.png")
+print("Screenshot salvo: debug_regiao.png")
 
 for conf in [0.9, 0.8, 0.7, 0.6, 0.5, 0.4]:
     try:
         box = pyautogui.locateOnScreen(img, confidence=conf, region=REGIAO_TESTE)
-        print(f"Confidence {conf}: {box}")~
-        pyautogui.click(box)
+        print(f"Confidence {conf}: {box}")
+        if box:
+            x, y = pyautogui.center(box)
+            pyautogui.moveTo(x, y, duration=0.2)
+            pyautogui.click()
+            break
     except Exception as e:
         print(f"Confidence {conf}: erro {e}")

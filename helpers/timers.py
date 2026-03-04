@@ -17,7 +17,6 @@ def marca_reset_agora():
 
 def executar_reset_geral():
     print("Executando RESET de cache...")
-
     x, y = COORDS["RESET"]
 
     pyautogui.click(x, y)
@@ -28,15 +27,5 @@ def executar_reset_geral():
     pyautogui.click(x, y)
     time.sleep(8)
 
-    if find_exists("error_confirmation.png", region_key="verify",
-                start_conf=0.7,
-                min_conf=0.3,
-                step=0.05,
-                retry_delay=0.2,
-                pasta="safe"):
-        pyautogui.click(x, y)
-        time.sleep(8)
-        return "error confirmatio corrigido"
-    else:
-        marca_reset_agora()
-        print("RESET finalizado.")
+    marca_reset_agora()
+    print("Reset finalizado")
