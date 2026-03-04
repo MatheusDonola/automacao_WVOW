@@ -1,6 +1,5 @@
 import pyautogui
 import time
-import random
 
 from core.state import STATE
 
@@ -9,9 +8,6 @@ from helpers.timers import tempo_estourou_stop, tempo_estourou_reset, executar_r
 from helpers.paths import project_dir, assets_dir, img_path, cmd_path
 from helpers.safety import serverc_safety
 from helpers.flow import find_and_click
-
-import os
-from helpers.paths import assets_dir, cmd_path
 
 if __name__ == "__main__":
     print("------ INICIALIZANDO ------")
