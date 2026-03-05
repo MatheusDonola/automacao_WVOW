@@ -4,7 +4,7 @@ import os
 
 from config import REGIONS, COORDS
 
-from helpers.screen import find_and_click, check_rally_initiated
+from helpers.screen import find_and_click, check_error
 from helpers.clicks import click_lizard_center, click_search_center
 from helpers.paths import img_path
 from helpers.screen import find_exists
@@ -17,9 +17,9 @@ DEBUG_CMD = False
 
 def mainfuct():
     if not find_and_click("lupa.png", region_key="lupa", confidence=0.50, tries=5):
-        if find_exists("diamond.png", region_key="safe_diamond", start_conf=0.80, min_conf=0.50, pasta="safe"):
-            click_region("lupa", margin=8, sleep_after=0.2)
-        else:
+        #if find_exists("diamond.png", region_key="safe_diamond", start_conf=0.80, min_conf=0.50, pasta="safe"):
+            #click_region("lupa", margin=8, sleep_after=0.2)
+        #else:
             return False
     if not find_and_click("firelizard.png", region_key="firelizard", confidence=0.7, tries=5):
             time.sleep(0.2)
@@ -31,7 +31,7 @@ def mainfuct():
 
     click_lizard_center(delay_before=0.6, jitter=7)
 
-    time.sleep(1)
+    time.sleep(0.2)
   
     if not find_and_click(
         "rally.png",
@@ -45,15 +45,9 @@ def mainfuct():
     if not find_and_click("march.png", region_key="march", confidence=0.30, tries=5):
         return False
     
-    ok = check_rally_initiated(
-    img_path,
-    conf=0.7,
-    region=REGIONS["INIT"],
-    fail_click_xy=COORDS["RALLY_FAIL_CLICK"],
-    retries=3,
-    delay=0.25
-)
-    return "sucesso" if ok else "falha"
+    if not check_error():
+        return "falha"
+
 
 def cmdcount(region):
     if DEBUG_CMD:

@@ -2,7 +2,7 @@ import time
 import os
 import pyautogui
 import random
-from config import REGIONS
+from config import REGIONS, COORDS
 from helpers.paths import img_path, cmd_path
 from helpers.clicks import click_region
 
@@ -82,31 +82,40 @@ def find_and_click(
 
     return False
 
-def check_rally_initiated(
-    img_path,
-    *,
-    conf,
-    region,
-    fail_click_xy=None,
-    retries=3,
-    delay=0.25
+def check_error(
+    icon_name="footstep.png",
+    region=REGIONS["CMD_FSTEP"],
+    back_click_xy=COORDS["LIZARD_CENTER"],
+    timeout=0.9,
+    start_conf=0.80,
+    min_conf=0.55,
+    step=0.05,
+    poll_delay=0.05,
+    click_delay=0.20
 ):
-    for _ in range(retries):
-        try:
-            rally_box = pyautogui.locateOnScreen(
-                img_path("rallyinitiated.png", pasta ="imagens"),
-                confidence=conf,
-                region=region
-            )
-        except (pyautogui.ImageNotFoundException, OSError):
-            rally_box = None
 
-        if rally_box:
-            if fail_click_xy:
-                x, y = fail_click_xy
-                pyautogui.click(x=x, y=y)
-            return False
+    path = img_path(icon_name, pasta="imagens")
+    end = time.time() + timeout
 
-        time.sleep(delay)
+    while time.time() < end:
+        conf = start_conf
+        while conf >= min_conf:
+            try:
+                box = pyautogui.locateOnScreen(
+                    path,
+                    confidence=conf,
+                    region=region,
+                    grayscale=True
+                )
+                if box:
+                    if back_click_xy:
+                        pyautogui.click(back_click_xy)
+                        time.sleep(click_delay)
+                    return False
+            except:
+                pass
+            conf -= step
 
-    return True 
+        time.sleep(poll_delay)
+
+    return True
