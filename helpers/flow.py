@@ -9,6 +9,7 @@ from helpers.clicks import click_lizard_center, click_search_center
 from helpers.paths import img_path
 from helpers.screen import find_exists
 from helpers.clicks import click_region
+from core.statistics import STATS
 
 from helpers.paths import cmd_path
 from datetime import datetime
@@ -17,15 +18,16 @@ DEBUG_CMD = False
 
 def mainfuct():
     if not find_and_click("lupa.png", region_key="lupa", confidence=0.50, tries=5):
-        return True
-    else:
-        False
+        return False
 
     if not find_and_click("firelizard.png", region_key="firelizard", confidence=0.7, tries=5):
             time.sleep(0.2)
             click_region("firelizard", margin=8, sleep_after=0.2)
+            STATS["fallback_firelizard"] +=1
+            print(f"Firelizard Fallback ativado ({STATS['fallback_firelizard']})")
 
-    click_search_center(delay_before=0.6, jitter=6)
+    if not find_and_click("search.png", region_key="search", confidence=0.7, tries=5):
+        return False
 
     time.sleep(1.4)
 
