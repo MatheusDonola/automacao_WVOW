@@ -17,10 +17,10 @@ DEBUG_CMD = False
 
 def mainfuct():
     if not find_and_click("lupa.png", region_key="lupa", confidence=0.50, tries=5):
-        #if find_exists("diamond.png", region_key="safe_diamond", start_conf=0.80, min_conf=0.50, pasta="safe"):
-            #click_region("lupa", margin=8, sleep_after=0.2)
-        #else:
-            return False
+        return True
+    else:
+        False
+
     if not find_and_click("firelizard.png", region_key="firelizard", confidence=0.7, tries=5):
             time.sleep(0.2)
             click_region("firelizard", margin=8, sleep_after=0.2)

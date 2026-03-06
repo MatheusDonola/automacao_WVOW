@@ -8,6 +8,7 @@ from helpers.timers import tempo_estourou_stop, tempo_estourou_reset, executar_r
 from helpers.paths import project_dir, assets_dir, img_path, cmd_path
 from helpers.safety import serverc_safety
 from helpers.flow import find_and_click
+from helpers.screen import check_error
 
 if __name__ == "__main__":
     print("------ INICIALIZANDO ------")
@@ -23,6 +24,7 @@ if __name__ == "__main__":
         if tempo_estourou_reset():
             executar_reset_geral()
 
+        check_error()
         verify_and_execute()
         serverc_safety()
         find_and_click("march.png", region_key="march", confidence=0.30, tries=2)
