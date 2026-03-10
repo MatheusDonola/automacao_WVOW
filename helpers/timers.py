@@ -5,6 +5,7 @@ from core.state import STATE
 from config import TEMPO_STOP, TEMPO_RESET
 from config import COORDS
 from helpers.screen import find_exists
+from helpers.logger import log
 
 def tempo_estourou_stop():
     return (time.time() - STATE["start"]) >= TEMPO_STOP
@@ -16,7 +17,7 @@ def marca_reset_agora():
     STATE["evento_reset"] = time.time()
 
 def executar_reset_geral():
-    print("Executando RESET de cache...")
+    log("Executando RESET Geral...")
     x, y = COORDS["RESET"]
 
     pyautogui.click(x, y)
@@ -28,4 +29,4 @@ def executar_reset_geral():
     time.sleep(8)
 
     marca_reset_agora()
-    print("Reset finalizado")
+    log("Reset finalizado")

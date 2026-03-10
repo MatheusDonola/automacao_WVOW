@@ -9,6 +9,9 @@ from helpers.paths import project_dir, assets_dir, img_path, cmd_path
 from helpers.safety import serverc_safety
 from helpers.flow import find_and_click
 from helpers.screen import check_error
+from helpers import logger
+
+logger.DEBUG = False
 
 if __name__ == "__main__":
     print("------ INICIALIZANDO ------")
@@ -18,7 +21,7 @@ if __name__ == "__main__":
 
     while True:
         if tempo_estourou_stop():
-            print("Tempo limite atingido.")
+            logger.log("Tempo limite atingido.")
             break
 
         if tempo_estourou_reset():

@@ -9,12 +9,13 @@ from helpers.paths import img_path
 from helpers.screen import find_exists
 from helpers.clicks import click_region
 from core.statistics import STATS
+from helpers.logger import log, debug
 
 from helpers.paths import cmd_path
 from datetime import datetime
 
 DEBUG_CMD = False
-FIRELIZARD = True
+FIRELIZARD = False
 
 def mainfuct():
     if not find_and_click("lupa.png", region_key="lupa", confidence=0.50, tries=5):
@@ -25,7 +26,7 @@ def mainfuct():
                 time.sleep(0.2)
                 click_region("firelizard", margin=8, sleep_after=0.2)
                 STATS["fallback_firelizard"] +=1
-                print(f"Firelizard Fallback ativado ({STATS['fallback_firelizard']})")
+                log(f"Firelizard Fallback ativado ({STATS['fallback_firelizard']})")
 
     if not find_and_click("search.png", region_key="search", confidence=0.7, tries=5):
         return False
@@ -61,7 +62,7 @@ def mainfuct():
 
 def cmdcount(region):
     if DEBUG_CMD:
-        print(f"[DEBUG] cmdcount chamado com região = {region}")
+        debug(f"[DEBUG] cmdcount chamado com região = {region}")
 
     encontrados = []
 
@@ -69,33 +70,33 @@ def cmdcount(region):
         path = cmd_path(f"cmd{i}.png")
 
         if DEBUG_CMD:
-            print(f"[DEBUG] tentando localizar: {path}")
+            debug(f"[DEBUG] tentando localizar: {path}")
 
         try:
             box = pyautogui.locateOnScreen(path, region=region, confidence=0.7)
         except Exception:
             if DEBUG_CMD:
-                print("[DEBUG] erro locate")
+                debug("[DEBUG] erro locate")
             box = None
 
         if box:
             encontrados.append(i)
 
     if DEBUG_CMD:
-        print(f"[DEBUG] contador final = {len(encontrados)}")
+        debug(f"[DEBUG] contador final = {len(encontrados)}")
 
     return len(encontrados), encontrados
 
 def verify_and_execute():
     qtd, encontrados = cmdcount(REGIONS["CMD"])
-    print(f"[CMDCOUNT] qtd={qtd} encontrados={encontrados}")
+    log(f"[CMDCOUNT] qtd={qtd} encontrados={encontrados}")
 
     if qtd < 3:
-        print("[FLOW] Entrando mainfuct() (qtd < 3)")
+        log("[FLOW] Entrando mainfuct() (qtd < 3)")
         result = mainfuct()
-        print(f"[FLOW] mainfuct() retornou: {result}")
+        log(f"[FLOW] mainfuct() retornou: {result}")
         return True
     else:
-        print("[FLOW] Não vai pro mainfuct (qtd >= 3). Sleep 1s")
+        log("[FLOW] Não vai pro mainfuct (qtd >= 3). Sleep 1s")
         time.sleep(0.2)
         return False

@@ -5,6 +5,7 @@ import random
 from config import REGIONS, COORDS
 from helpers.paths import img_path, cmd_path
 from helpers.clicks import click_region
+from helpers.logger import log, debug
 
 DEBUG = False
 
@@ -58,7 +59,7 @@ def find_and_click(
         box = find_image(nome_img, region_key, confidence)
 
         if DEBUG:
-            print(f"[FIND] {nome_img} try={tentativa}/{tries} "
+            debug(f"[FIND] {nome_img} try={tentativa}/{tries} "
                   f"region_key={region_key} conf={confidence} box={box}")
 
         if box:
@@ -70,7 +71,7 @@ def find_and_click(
             x2, y2 = x + jx, y + jy
 
             if DEBUG:
-                print(f"[CLICK] center=({x},{y}) jitter=({jx},{jy}) final=({x2},{y2})")
+                log(f"[CLICK] center=({x},{y}) jitter=({jx},{jy}) final=({x2},{y2})")
 
             pyautogui.click(x2, y2)
             return True
@@ -78,7 +79,7 @@ def find_and_click(
         time.sleep(retry_delay)
 
     if DEBUG:
-        print(f"[FIND] {nome_img} FALHOU após {tries} tentativas")
+        log(f"[FIND] {nome_img} FALHOU após {tries} tentativas")
 
     return False
 
