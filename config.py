@@ -1,5 +1,10 @@
 import os
 
+#==== DEBUG ====
+DEBUG = False
+Firelizard = True
+
+
 #====REGIONS=====
 REGIONS = {
     "CMD": (1406, 404, 382, 335),
@@ -38,6 +43,4 @@ DELAY_BACK = 0.6
 # ===== CONFIDENCES =====
 CONF_DEFAULT = 0.45
 CONF_RALLY = 0.30
-
-
 

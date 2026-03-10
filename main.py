@@ -10,8 +10,9 @@ from helpers.safety import serverc_safety
 from helpers.flow import find_and_click
 from helpers.screen import check_error
 from helpers import logger
+import config
 
-logger.DEBUG = False
+logger.DEBUG = config.DEBUG
 
 if __name__ == "__main__":
     print("------ INICIALIZANDO ------")
