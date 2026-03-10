@@ -1,11 +1,10 @@
 import pyautogui
 import time
-import os
 
-from config import REGIONS, COORDS
+from config import REGIONS
 
 from helpers.screen import find_and_click, check_error
-from helpers.clicks import click_lizard_center, click_search_center
+from helpers.clicks import click_lizard_center, click_search_center, click_rebel_center
 from helpers.paths import img_path
 from helpers.screen import find_exists
 from helpers.clicks import click_region
@@ -15,34 +14,43 @@ from helpers.paths import cmd_path
 from datetime import datetime
 
 DEBUG_CMD = False
+FIRELIZARD = True
 
 def mainfuct():
     if not find_and_click("lupa.png", region_key="lupa", confidence=0.50, tries=5):
         return False
 
-    if not find_and_click("firelizard.png", region_key="firelizard", confidence=0.7, tries=5):
-            time.sleep(0.2)
-            click_region("firelizard", margin=8, sleep_after=0.2)
-            STATS["fallback_firelizard"] +=1
-            print(f"Firelizard Fallback ativado ({STATS['fallback_firelizard']})")
+    if FIRELIZARD:
+        if not find_and_click("firelizard.png", region_key="firelizard", confidence=0.7, tries=5):
+                time.sleep(0.2)
+                click_region("firelizard", margin=8, sleep_after=0.2)
+                STATS["fallback_firelizard"] +=1
+                print(f"Firelizard Fallback ativado ({STATS['fallback_firelizard']})")
 
     if not find_and_click("search.png", region_key="search", confidence=0.7, tries=5):
         return False
+        
+    time.sleep(1.6)
 
-    time.sleep(1.4)
-
-    click_lizard_center(delay_before=0.6, jitter=7)
+    if FIRELIZARD:
+        click_lizard_center(delay_before=0.6, jitter=7)
+    else:
+        click_rebel_center(delay_before=0.5, jitter=8)
 
     time.sleep(0.2)
   
-    if not find_and_click(
-        "rally.png",
-        region_key="rally",
-        confidence=0.45,
-        tries=12,           #tries x delay ~1.4seg tot= 2.4
-        retry_delay=0.15
-    ):
-        return False
+    if FIRELIZARD:
+        if not find_and_click(
+            "rally.png",
+            region_key="rally",
+            confidence=0.45,
+            tries=6,           
+            retry_delay=0.15
+        ):
+            return False
+    else:
+        if not find_and_click("attk.png", region_key="attk", confidence=0.7, tries=5):
+            return False
 
     if not find_and_click("march.png", region_key="march", confidence=0.30, tries=5):
         return False

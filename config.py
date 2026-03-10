@@ -13,7 +13,8 @@ REGIONS = {
     "safe_diamond": (1579, 33, 86, 65),
     "serverc":(116, 30, 120, 106),
     "verify":(204, 253, 109, 128),
-    "CMD_FSTEP":(1739, 225, 62, 407)
+    "CMD_FSTEP":(1739, 225, 62, 407),
+    "attk":(1242, 664, 131, 47)
 }
 
 COORDS = {
@@ -21,12 +22,13 @@ COORDS = {
     "RESET": (125, 948),
     "RALLY_FAIL_CLICK": (672, 468),
     "LIZARD_CENTER": (948, 560),
-    "FIRELIZARD_CENTER": (614, 943)
+    "FIRELIZARD_CENTER": (614, 943),
+    "REBEL":(943,523)
 }
 
 # ===== TEMPOS =====
-TEMPO_STOP = 7240 
-TEMPO_RESET = 450  #450 padrão
+TEMPO_STOP = 3000 #3600 por hora
+TEMPO_RESET = 450  #450 padrão ~ 7,5 min
 
 # ===== COMPORTAMENTO =====
 ATAQUE_RAILGUN = True

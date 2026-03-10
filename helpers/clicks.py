@@ -39,4 +39,15 @@ def click_lizard_center(delay_before=0.5, jitter=8):
     y = base_y + random.randint(-jitter, jitter)
 
     pyautogui.click(x, y)
-    time.sleep(0.2)
+    time.sleep(0.1)
+
+def click_rebel_center(delay_before=0.5, jitter=8):
+    time.sleep(delay_before)
+
+    base_x, base_y = COORDS["REBEL"]
+
+    x = base_x + random.randint(-jitter, jitter)
+    y = base_y + random.randint(-jitter, jitter)
+
+    pyautogui.click(x, y)
+    time.sleep(0.1)

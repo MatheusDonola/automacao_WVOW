@@ -83,7 +83,7 @@ def find_and_click(
     return False
 
 def check_error(
-    icon_name="footstep.png",
+    icon_names=("footstep.png", "heal.png"),
     region=REGIONS["CMD_FSTEP"],
     back_click_xy=COORDS["LIZARD_CENTER"],
     timeout=0.9,
@@ -93,27 +93,32 @@ def check_error(
     poll_delay=0.05,
     click_delay=0.20
 ):
+    if isinstance(icon_names, str):
+        icon_names = (icon_names,)
 
-    path = img_path(icon_name, pasta="imagens")
+    paths = [img_path(icon_name, pasta="imagens") for icon_name in icon_names]
     end = time.time() + timeout
+
+    time.sleep(0.05)
 
     while time.time() < end:
         conf = start_conf
         while conf >= min_conf:
-            try:
-                box = pyautogui.locateOnScreen(
-                    path,
-                    confidence=conf,
-                    region=region,
-                    grayscale=True
-                )
-                if box:
-                    if back_click_xy:
-                        pyautogui.click(back_click_xy)
-                        time.sleep(click_delay)
-                    return False
-            except:
-                pass
+            for path in paths:
+                try:
+                    box = pyautogui.locateOnScreen(
+                        path,
+                        confidence=conf,
+                        region=region,
+                        grayscale=True
+                    )
+                    if box:
+                        if back_click_xy:
+                            pyautogui.click(back_click_xy)
+                            time.sleep(click_delay)
+                        return False
+                except:
+                    pass
             conf -= step
 
         time.sleep(poll_delay)
