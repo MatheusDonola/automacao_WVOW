@@ -32,7 +32,7 @@ COORDS = {
 }
 
 # ===== TEMPOS =====
-TEMPO_STOP = 3000 #3600 por hora
+TEMPO_STOP = 7200 #3600 por hora
 TEMPO_RESET = 450  #450 padrão ~ 7,5 min
 
 # ===== COMPORTAMENTO =====

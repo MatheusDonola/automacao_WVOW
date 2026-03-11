@@ -10,17 +10,28 @@ from helpers.safety import serverc_safety
 from helpers.flow import find_and_click
 from helpers.screen import check_error
 from helpers import logger
+from threading import Event
 import config
 
 logger.DEBUG = config.DEBUG
 
-if __name__ == "__main__":
-    print("------ INICIALIZANDO ------")
+stop_event = Event()
+
+def request_stop():
+    stop_event.set()
+
+def clear_stop():
+    stop_event.clear()
+
+def main_loop():
+    clear_stop()
+
+    logger.log("------ INICIALIZANDO ------")
     time.sleep(3)
     pyautogui.PAUSE = 0.3
     pyautogui.FAILSAFE = False
 
-    while True:
+    while not stop_event.is_set():
         if tempo_estourou_stop():
             logger.log("Tempo limite atingido.")
             break
@@ -32,3 +43,11 @@ if __name__ == "__main__":
         verify_and_execute()
         serverc_safety()
         find_and_click("march.png", region_key="march", confidence=0.30, tries=2)
+
+    if stop_event.is_set():
+        logger.log("Parada solicitada pelo usuário.")
+
+    logger.log("Bot finalizado.")
+
+if __name__ == "__main__":
+    main_loop()
