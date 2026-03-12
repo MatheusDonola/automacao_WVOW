@@ -32,35 +32,37 @@ class Sidebar(ctk.CTkFrame):
         self.lbl_subtitulo.grid(row=1, column=0, padx=20, pady=(0, 20), sticky="w")
 
         self.btn_dashboard = ctk.CTkButton(
-            self,
-            text="Dashboard",
-            command=dashboard_callback
-        )
+    self,
+    text="Dashboard",
+    command=dashboard_callback
+    )
+        self.btn_dashboard.grid(row=2, column=0, padx=20, pady=8, sticky="ew")
 
         self.btn_config = ctk.CTkButton(
-        self,
-        text="Configurações",
-        command=config_callback
+            self,
+            text="Configurações",
+            command=config_callback
         )
+        self.btn_config.grid(row=3, column=0, padx=20, pady=8, sticky="ew")
 
         self.btn_logs = ctk.CTkButton(
-        self,
-        text="Logs",
-        command=logs_callback
+            self,
+            text="Logs",
+            command=logs_callback
         )
         self.btn_logs.grid(row=4, column=0, padx=20, pady=8, sticky="ew")
 
         self.btn_stats = ctk.CTkButton(
-        self,
-        text="Estatísticas",
-        command=stats_callback
+            self,
+            text="Estatísticas",
+            command=stats_callback
         )
         self.btn_stats.grid(row=5, column=0, padx=20, pady=8, sticky="ew")
 
         self.menu_tema = ctk.CTkOptionMenu(
-            self,
-            values=["Dark", "Light", "System"],
-            command=tema_callback
-        )
+                self,
+                values=["Dark", "Light", "System"],
+                command=tema_callback
+                )
         self.menu_tema.set("Dark")
         self.menu_tema.grid(row=9, column=0, padx=20, pady=(10, 25), sticky="ew")

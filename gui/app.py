@@ -2,8 +2,8 @@ import threading
 import customtkinter as ctk
 
 from main import main_loop, request_stop
-from AutomacaoVow.gui.sidebar_view import Sidebar
-from AutomacaoVow.gui.dashboard_view import Dashboard
+from gui.sidebar_view import Sidebar
+from gui.dashboard_view import Dashboard
 from gui.logs_view import LogsView
 from gui.stats_view import StatsView
 from gui.config_view import ConfigView
