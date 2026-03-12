@@ -10,12 +10,13 @@ from helpers.screen import find_exists
 from helpers.clicks import click_region
 from core.statistics import STATS
 from helpers.logger import log, debug
+import config
 
 from helpers.paths import cmd_path
 from datetime import datetime
 
 DEBUG_CMD = False
-FIRELIZARD = False
+FIRELIZARD = config.FIRELIZARD
 
 def mainfuct():
     if not find_and_click("lupa.png", region_key="lupa", confidence=0.50, tries=5):

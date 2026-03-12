@@ -2,7 +2,7 @@ import os
 
 #==== DEBUG ====
 DEBUG = False
-Firelizard = True
+FIRELIZARD = True
 
 
 #====REGIONS=====
@@ -19,7 +19,8 @@ REGIONS = {
     "serverc":(116, 30, 120, 106),
     "verify":(204, 253, 109, 128),
     "CMD_FSTEP":(1739, 225, 62, 407),
-    "attk":(1242, 664, 131, 47)
+    "attk":(1242, 664, 131, 47),
+    "ENERGY":(51, 193, 242, 50)
 }
 
 COORDS = {
