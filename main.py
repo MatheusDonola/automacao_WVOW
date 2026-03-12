@@ -48,6 +48,8 @@ def main_loop():
     if stop_event.is_set():
         logger.log("Parada solicitada pelo usuário.")
         logger.log("======== DATA ========")
+        print("STATS type:", type(STATS))
+        print("TEM close_session?", hasattr(STATS, "close_session"))
         STATS.close_session()
       
 
