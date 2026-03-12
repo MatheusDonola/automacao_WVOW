@@ -9,6 +9,7 @@ from helpers.paths import project_dir, assets_dir, img_path, cmd_path
 from helpers.safety import serverc_safety
 from helpers.flow import find_and_click
 from helpers.screen import check_error
+from helpers.ocr import read_energy
 from helpers import logger
 from threading import Event
 import config
@@ -31,6 +32,8 @@ def main_loop():
     time.sleep(3)
     pyautogui.PAUSE = 0.3
     pyautogui.FAILSAFE = False
+    STATS.energia_inicial = read_energy()
+    logger.log(f"Energia inicial detectada: {STATS.energia_inicial}")
 
     while not stop_event.is_set():
         if tempo_estourou_stop():
@@ -48,8 +51,7 @@ def main_loop():
     if stop_event.is_set():
         logger.log("Parada solicitada pelo usuário.")
         logger.log("======== DATA ========")
-        print("STATS type:", type(STATS))
-        print("TEM close_session?", hasattr(STATS, "close_session"))
+        STATS.energia_final = read_energy()
         STATS.close_session()
       
 

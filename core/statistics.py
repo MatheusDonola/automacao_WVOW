@@ -80,8 +80,16 @@ class Statistics:
         self.rallies_perdidos()
         self.loot_taken()
 
+        log(f"Energia inicial: {self.energia_inicial}")
+        log(f"Energia final: {self.energia_final}")
+        log(f"Energia gasta: {self.energia_gasta()}")
+        log(f"Rallies tentados: {self.rallies_tentados}")
+        log(f"Rallies sucesso: {self.rallies_sucesso}")
+        log(f"Rallies falha: {self.rallies_falha}")
+        log(f"Green books: {self.green_book}")
+        log(f"Premium cards: {self.premium_card}")
+        log(f"Advanced chests: {self.advanced_chest}")
+        log(f"Materials: {self.materials}")
+
 
 STATS = Statistics()
-
-print("TEM close_session?", hasattr(STATS, "close_session"))
-print("METODOS:", [x for x in dir(STATS) if "session" in x or "loot" in x or "rallies" in x])
