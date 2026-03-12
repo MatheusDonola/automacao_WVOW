@@ -2,7 +2,15 @@ import customtkinter as ctk
 
 
 class Sidebar(ctk.CTkFrame):
-    def __init__(self, master, tema_callback):
+    def __init__(
+    self,
+    master,
+    tema_callback,
+    dashboard_callback,
+    config_callback,
+    logs_callback,
+    stats_callback
+    ):
         super().__init__(master, width=260, corner_radius=0)
 
         self.grid_propagate(False)
@@ -23,16 +31,30 @@ class Sidebar(ctk.CTkFrame):
         )
         self.lbl_subtitulo.grid(row=1, column=0, padx=20, pady=(0, 20), sticky="w")
 
-        self.btn_dashboard = ctk.CTkButton(self, text="Dashboard")
-        self.btn_dashboard.grid(row=2, column=0, padx=20, pady=8, sticky="ew")
+        self.btn_dashboard = ctk.CTkButton(
+            self,
+            text="Dashboard",
+            command=dashboard_callback
+        )
 
-        self.btn_config = ctk.CTkButton(self, text="Configurações")
-        self.btn_config.grid(row=3, column=0, padx=20, pady=8, sticky="ew")
+        self.btn_config = ctk.CTkButton(
+        self,
+        text="Configurações",
+        command=config_callback
+        )
 
-        self.btn_logs = ctk.CTkButton(self, text="Logs")
+        self.btn_logs = ctk.CTkButton(
+        self,
+        text="Logs",
+        command=logs_callback
+        )
         self.btn_logs.grid(row=4, column=0, padx=20, pady=8, sticky="ew")
 
-        self.btn_stats = ctk.CTkButton(self, text="Estatísticas")
+        self.btn_stats = ctk.CTkButton(
+        self,
+        text="Estatísticas",
+        command=stats_callback
+        )
         self.btn_stats.grid(row=5, column=0, padx=20, pady=8, sticky="ew")
 
         self.menu_tema = ctk.CTkOptionMenu(
