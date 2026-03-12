@@ -11,6 +11,7 @@ from helpers.clicks import click_region
 from core.statistics import STATS
 from helpers.logger import log, debug
 import config
+import statistics
 
 from helpers.paths import cmd_path
 from datetime import datetime

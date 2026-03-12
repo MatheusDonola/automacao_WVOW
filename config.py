@@ -1,6 +1,6 @@
 import os
 
-#==== DEBUG ====
+#==== CONFIG ====
 DEBUG = False
 FIRELIZARD = True
 

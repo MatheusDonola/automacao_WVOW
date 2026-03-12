@@ -12,6 +12,7 @@ from helpers.screen import check_error
 from helpers import logger
 from threading import Event
 import config
+from core.statistics import STATS
 
 logger.DEBUG = config.DEBUG
 
@@ -46,6 +47,9 @@ def main_loop():
 
     if stop_event.is_set():
         logger.log("Parada solicitada pelo usuário.")
+        logger.log("======== DATA ========")
+        STATS.close_session()
+      
 
     logger.log("Bot finalizado.")
 
