@@ -6,7 +6,7 @@ from config import REGIONS
 from helpers.screen import find_and_click, check_error
 from helpers.clicks import click_lizard_center, click_search_center, click_rebel_center
 from helpers.paths import img_path
-from helpers.screen import find_exists
+from helpers.screen import find_exists, check_error
 from helpers.clicks import click_region
 from core.statistics import STATS
 from helpers.logger import log, debug
@@ -20,20 +20,20 @@ DEBUG_CMD = False
 FIRELIZARD = config.FIRELIZARD
 
 def mainfuct():
-    if not find_and_click("lupa.png", region_key="lupa", confidence=0.50, tries=5):
+    if not find_exists("lupa.png", region_key="lupa", start_conf=0.5, min_conf=0.3):
+        check_error()
         return False
+
+    click_region("lupa_click")
 
     if FIRELIZARD:
         if not find_and_click("firelizard.png", region_key="firelizard", confidence=0.7, tries=5):
-                time.sleep(0.2)
-                click_region("firelizard", margin=8, sleep_after=0.2)
-                STATS["fallback_firelizard"] +=1
-                log(f"Firelizard Fallback ativado ({STATS['fallback_firelizard']})")
+            return False
 
-    if not find_and_click("search.png", region_key="search", confidence=0.7, tries=5):
+    if not find_and_click("search.png", region_key="search", confidence=0.5, tries=5):
         return False
         
-    time.sleep(1.6)
+    time.sleep(2.3)
 
     if FIRELIZARD:
         click_lizard_center(delay_before=0.6, jitter=7)
@@ -59,7 +59,7 @@ def mainfuct():
         return False
     
     if not check_error():
-        return "falha"
+        return "falha no rally" 
 
 
 def cmdcount(region):

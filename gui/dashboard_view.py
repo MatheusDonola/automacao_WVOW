@@ -26,6 +26,7 @@ class Dashboard(ctk.CTkFrame):
         )
         self.lbl_desc.grid(row=1, column=0, padx=18, pady=(0, 16), sticky="w")
 
+        # CARD CONTROLES
         self.card_controle = ctk.CTkFrame(self)
         self.card_controle.grid(row=1, column=0, sticky="nsew", padx=(0, 8))
         self.card_controle.grid_columnconfigure(0, weight=1)
@@ -62,9 +63,11 @@ class Dashboard(ctk.CTkFrame):
         )
         self.btn_stop.grid(row=3, column=0, padx=18, pady=(0, 18), sticky="ew")
 
+        # CARD RESUMO
         self.card_info = ctk.CTkFrame(self)
         self.card_info.grid(row=1, column=1, sticky="nsew", padx=(8, 0))
         self.card_info.grid_columnconfigure(0, weight=1)
+        self.card_info.grid_rowconfigure(1, weight=1)
 
         self.lbl_info = ctk.CTkLabel(
             self.card_info,
@@ -75,16 +78,24 @@ class Dashboard(ctk.CTkFrame):
 
         self.txt_info = ctk.CTkTextbox(self.card_info, height=260)
         self.txt_info.grid(row=1, column=0, padx=18, pady=(0, 18), sticky="nsew")
-        self.txt_info.insert(
-            "1.0",
-            "Interface inicial criada com sucesso.\n\n"
-            "Próximos passos naturais:\n"
-            "- ligar status em tempo real\n"
-            "- mostrar logs na tela\n"
-            "- criar área de configurações\n"
-            "- adicionar estatísticas"
+
+        self._set_textbox_content(
+            "Bot parado.\n\n"
+            "Quando iniciar, este painel poderá mostrar em tempo real:\n"
+            "- tempo total da sessão\n"
+            "- tempo desde o último reset\n"
+            "- valor atual dos contadores\n"
+            "- sinais de travamento do fluxo"
         )
+
+    def _set_textbox_content(self, texto):
+        self.txt_info.configure(state="normal")
+        self.txt_info.delete("1.0", "end")
+        self.txt_info.insert("1.0", texto)
         self.txt_info.configure(state="disabled")
 
     def set_status(self, texto):
         self.status_var.set(texto)
+
+    def set_resumo(self, texto):
+        self._set_textbox_content(texto)

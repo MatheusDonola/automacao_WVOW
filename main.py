@@ -1,7 +1,7 @@
 import pyautogui
 import time
 
-from core.state import STATE
+from core import state
 
 from helpers.flow import verify_and_execute
 from helpers.timers import tempo_estourou_stop, tempo_estourou_reset, executar_reset_geral
@@ -15,7 +15,7 @@ from threading import Event
 import config
 from core.statistics import STATS
 
-logger.DEBUG = config.DEBUG
+logger.DEBUG = config.DEBUG 
 
 stop_event = Event()
 
@@ -30,6 +30,7 @@ def main_loop():
 
     logger.log("------ INICIALIZANDO ------")
     time.sleep(3)
+    state.reset_state()
     pyautogui.PAUSE = 0.3
     pyautogui.FAILSAFE = False
     STATS.energia_inicial = read_energy()

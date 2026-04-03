@@ -14,7 +14,7 @@ def find_exists(nome_img, region_key=None,
                 min_conf=0.3,
                 step=0.05,
                 retry_delay=0.2,
-                pasta="bsfctpath"):
+                pasta="bsfuctpath"):
 
     path = img_path(nome_img, pasta=pasta)
     region = REGIONS.get(region_key)
@@ -86,12 +86,12 @@ def find_and_click(
 def check_error(
     icon_names=("footstep.png", "heal.png"),
     region=REGIONS["CMD_FSTEP"],
-    back_click_xy=COORDS["LIZARD_CENTER"],
+    back_click_xy=COORDS["BACK"],
     timeout=0.9,
     start_conf=0.80,
-    min_conf=0.55,
+    min_conf=0.7,
     step=0.05,
-    poll_delay=0.05,
+    poll_delay=0.1,
     click_delay=0.20
 ):
     if isinstance(icon_names, str):
@@ -100,7 +100,7 @@ def check_error(
     paths = [img_path(icon_name, pasta="imagens") for icon_name in icon_names]
     end = time.time() + timeout
 
-    time.sleep(0.05)
+    time.sleep(0.35)
 
     while time.time() < end:
         conf = start_conf

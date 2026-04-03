@@ -2,7 +2,15 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Python: main",
+      "name": "Python: GUI",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/gui.py",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "Python: Main",
       "type": "python",
       "request": "launch",
       "program": "${workspaceFolder}/main.py",

@@ -1,17 +1,11 @@
 import threading
+import time
 import customtkinter as ctk
 
 from main import main_loop, request_stop
-from gui.sidebar_view import Sidebar
+from core.state import STATE
 from gui.dashboard_view import Dashboard
-from gui.logs_view import LogsView
-from gui.stats_view import StatsView
-from gui.config_view import ConfigView
-
-
-ctk.set_appearance_mode("dark")
-ctk.set_default_color_theme("blue")
-
+from gui.sidebar_view import Sidebar
 
 
 class App(ctk.CTk):
@@ -22,25 +16,24 @@ class App(ctk.CTk):
         self.geometry("980x620")
         self.minsize(900, 560)
 
-        self.current_view = None
-
         self.bot_thread = None
+        self.bot_rodando = False
 
         self.grid_columnconfigure(1, weight=1)
         self.grid_rowconfigure(0, weight=1)
 
         self.sidebar = Sidebar(
         self,
-        tema_callback=self.alterar_tema,
         dashboard_callback=self.mostrar_dashboard,
         config_callback=self.mostrar_config,
         logs_callback=self.mostrar_logs,
-        stats_callback=self.mostrar_stats
-        )
+        stats_callback=self.mostrar_stats,
+        tema_callback=self.alterar_tema
+    )
         self.sidebar.grid(row=0, column=0, sticky="ns")
 
         self.main_area = ctk.CTkFrame(self, corner_radius=0)
-        self.main_area.grid(row=0, column=1, sticky="nsew", padx=18, pady=18)
+        self.main_area.grid(row=0, column=1, sticky="nsew")
         self.main_area.grid_columnconfigure(0, weight=1)
         self.main_area.grid_rowconfigure(0, weight=1)
 
@@ -51,53 +44,85 @@ class App(ctk.CTk):
         )
         self.dashboard.grid(row=0, column=0, sticky="nsew")
 
-        self.checar_thread()
+        self.dashboard.set_status("Status: parado")
+        self.dashboard.set_resumo(
+            "Bot parado.\n\n"
+            "Clique em Iniciar bot para começar uma nova sessão."
+        )
 
-        self.mostrar_dashboard()
+        self.after(500, self.atualizar_interface)
+
+    def alterar_tema(self, novo_tema):
+        ctk.set_appearance_mode(novo_tema.lower())
 
     def iniciar_bot(self):
         if self.bot_thread and self.bot_thread.is_alive():
             self.dashboard.set_status("Status: rodando")
             return
 
+        agora = time.time()
+        STATE["start"] = agora
+        STATE["evento_reset"] = agora
+
+        self.bot_rodando = True
+        self.dashboard.set_status("Status: rodando")
+
         self.bot_thread = threading.Thread(target=main_loop, daemon=True)
         self.bot_thread.start()
-        self.dashboard.set_status("Status: rodando")
 
     def parar_bot(self):
         request_stop()
         self.dashboard.set_status("Status: parando...")
 
-    def alterar_tema(self, novo_tema):
-        ctk.set_appearance_mode(novo_tema.lower())
+    def atualizar_interface(self):
+        thread_viva = self.bot_thread and self.bot_thread.is_alive()
 
-    def checar_thread(self):
-        if self.bot_thread and not self.bot_thread.is_alive():
-            self.dashboard.set_status("Status: parado")
+        if thread_viva:
+            self.bot_rodando = True
+            self.dashboard.set_resumo(self.montar_resumo())
 
-        self.after(1000, self.checar_thread)
+        else:
+            if self.bot_rodando:
+                self.bot_rodando = False
+                self.dashboard.set_status("Status: parado")
+                self.dashboard.set_resumo(
+                    "Bot parado.\n\n"
+                    "Clique em Iniciar bot para começar uma nova sessão."
+                )
 
-    def trocar_view(self, nova_view):
-        if self.current_view is not None:
-            self.current_view.destroy()
+        self.after(500, self.atualizar_interface)
 
-        self.current_view = nova_view
-        self.current_view.grid(row=0, column=0, sticky="nsew")
+    def montar_resumo(self):
+        agora = time.time()
+        inicio = STATE.get("start", agora)
+        ultimo_reset = STATE.get("evento_reset", inicio)
 
-    def mostrar_dashboard(self):
-        self.trocar_view(
-            Dashboard(
-                self.main_area,
-                iniciar_callback=self.iniciar_bot,
-                parar_callback=self.parar_bot
-          )
+        tempo_total = max(0, int(agora - inicio))
+        tempo_reset = max(0, int(agora - ultimo_reset))
+
+        return (
+            "Monitor do bot\n\n"
+            f"Tempo total da sessão: {self.formatar_tempo(tempo_total)}\n"
+            f"Tempo desde o último reset: {self.formatar_tempo(tempo_reset)}\n\n"
+            f"Sessão iniciada em: {time.strftime('%H:%M:%S', time.localtime(inicio))}\n"
+            f"Último reset em: {time.strftime('%H:%M:%S', time.localtime(ultimo_reset))}"
         )
 
-    def mostrar_logs(self):
-        self.trocar_view(LogsView(self.main_area))
-
-    def mostrar_stats(self):
-        self.trocar_view(StatsView(self.main_area))
+    @staticmethod
+    def formatar_tempo(total_segundos):
+        horas = total_segundos // 3600
+        minutos = (total_segundos % 3600) // 60
+        segundos = total_segundos % 60
+        return f"{horas:02d}:{minutos:02d}:{segundos:02d}"
+    
+    def mostrar_dashboard(self):
+        self.dashboard.grid(row=0, column=0, sticky="nsew")
 
     def mostrar_config(self):
-        self.trocar_view(ConfigView(self.main_area))
+        print("Tela de configurações ainda não implementada")
+
+    def mostrar_logs(self):
+        print("Tela de logs ainda não implementada")
+
+    def mostrar_stats(self):
+        print("Tela de estatísticas ainda não implementada")
