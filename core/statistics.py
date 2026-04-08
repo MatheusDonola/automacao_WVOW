@@ -12,11 +12,13 @@ class Statistics:
         self.rallies_tentados = 0
         self.rallies_sucesso = 0
         self.rallies_falha = 0
+        self.rallies_em_andamento = 0
 
         self.premium_card = 0
         self.advanced_chest = 0
         self.green_book = 0
         self.materials = 0
+        
 
 
     def energia_gasta(self):
@@ -34,7 +36,8 @@ class Statistics:
             return None
 
         custo = 150 if FIRELIZARD else 50
-        self.rallies_sucesso = energia // custo
+        sucesso_base = energia // custo
+        self.rallies_sucesso = sucesso_base + self.rallies_em_andamento
 
         return self.rallies_sucesso
 

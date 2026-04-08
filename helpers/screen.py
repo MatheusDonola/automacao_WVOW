@@ -84,7 +84,7 @@ def find_and_click(
     return False
 
 def check_error(
-    icon_names=("footstep.png", "heal.png"),
+    icon_names=("footstep.png",  "heal.png"),
     region=REGIONS["CMD_FSTEP"],
     back_click_xy=COORDS["BACK"],
     timeout=0.9,

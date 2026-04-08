@@ -5,6 +5,8 @@ class Dashboard(ctk.CTkFrame):
     def __init__(self, master, iniciar_callback, parar_callback):
         super().__init__(master, corner_radius=0)
 
+        self._ultimo_resumo = None
+
         self.grid_columnconfigure((0, 1), weight=1)
         self.grid_rowconfigure(1, weight=1)
 
@@ -26,7 +28,6 @@ class Dashboard(ctk.CTkFrame):
         )
         self.lbl_desc.grid(row=1, column=0, padx=18, pady=(0, 16), sticky="w")
 
-        # CARD CONTROLES
         self.card_controle = ctk.CTkFrame(self)
         self.card_controle.grid(row=1, column=0, sticky="nsew", padx=(0, 8))
         self.card_controle.grid_columnconfigure(0, weight=1)
@@ -63,7 +64,6 @@ class Dashboard(ctk.CTkFrame):
         )
         self.btn_stop.grid(row=3, column=0, padx=18, pady=(0, 18), sticky="ew")
 
-        # CARD RESUMO
         self.card_info = ctk.CTkFrame(self)
         self.card_info.grid(row=1, column=1, sticky="nsew", padx=(8, 0))
         self.card_info.grid_columnconfigure(0, weight=1)
@@ -93,9 +93,12 @@ class Dashboard(ctk.CTkFrame):
         self.txt_info.delete("1.0", "end")
         self.txt_info.insert("1.0", texto)
         self.txt_info.configure(state="disabled")
+        self._ultimo_resumo = texto
 
     def set_status(self, texto):
         self.status_var.set(texto)
 
     def set_resumo(self, texto):
+        if texto == self._ultimo_resumo:
+            return
         self._set_textbox_content(texto)

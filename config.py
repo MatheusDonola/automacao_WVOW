@@ -3,6 +3,7 @@ import os
 #==== CONFIG ====
 DEBUG = False
 FIRELIZARD = True
+TOTAL_CMD_SLOT = 3
 
 
 #====REGIONS=====

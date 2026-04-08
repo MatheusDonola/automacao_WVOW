@@ -1,5 +1,6 @@
 import pyautogui
 import time
+import os 
 
 from config import REGIONS
 
@@ -11,7 +12,6 @@ from helpers.clicks import click_region
 from core.statistics import STATS
 from helpers.logger import log, debug
 import config
-import statistics
 
 from helpers.paths import cmd_path
 from datetime import datetime
@@ -61,31 +61,36 @@ def mainfuct():
     if not check_error():
         return "falha no rally" 
 
-
-def cmdcount(region):
-    if DEBUG_CMD:
-        debug(f"[DEBUG] cmdcount chamado com região = {region}")
+def cmdcount(region, max_cmd=16, limite_falhas_seguidas=8):
 
     encontrados = []
+    falhas_seguidas = 0
 
-    for i in range(1, 4):
+    for i in range(1, max_cmd + 1):
+
         path = cmd_path(f"cmd{i}.png")
 
-        if DEBUG_CMD:
-            debug(f"[DEBUG] tentando localizar: {path}")
+        if not os.path.exists(path):
+            continue
 
         try:
-            box = pyautogui.locateOnScreen(path, region=region, confidence=0.7)
+            box = pyautogui.locateOnScreen(
+                path,
+                region=region,
+                confidence=0.55,
+                grayscale=True
+            )
         except Exception:
-            if DEBUG_CMD:
-                debug("[DEBUG] erro locate")
             box = None
 
         if box:
             encontrados.append(i)
+            falhas_seguidas = 0
+        else:
+            falhas_seguidas += 1
 
-    if DEBUG_CMD:
-        debug(f"[DEBUG] contador final = {len(encontrados)}")
+        if falhas_seguidas >= limite_falhas_seguidas:
+            break
 
     return len(encontrados), encontrados
 
@@ -93,7 +98,7 @@ def verify_and_execute():
     qtd, encontrados = cmdcount(REGIONS["CMD"])
     log(f"[CMDCOUNT] qtd={qtd} encontrados={encontrados}")
 
-    if qtd < 3:
+    if qtd < config.TOTAL_CMD_SLOT:
         log("[FLOW] Entrando mainfuct() (qtd < 3)")
         result = mainfuct()
         log(f"[FLOW] mainfuct() retornou: {result}")
