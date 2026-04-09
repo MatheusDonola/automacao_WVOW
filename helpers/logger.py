@@ -5,10 +5,9 @@ DEBUG = False
 
 
 def _emit(msg):
-    print(msg)
     if log_callback:
         log_callback(msg)
-
+    print(msg)
 
 def log(msg):
     ts = datetime.now().strftime("%H:%M:%S")

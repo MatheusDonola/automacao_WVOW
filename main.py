@@ -14,31 +14,22 @@ from helpers import logger
 from threading import Event
 import config
 from core.statistics import STATS
+from multiprocessing import Event
 
 logger.DEBUG = config.DEBUG 
 
-stop_event = Event()
-
-def request_stop():
-    stop_event.set()
-
-def clear_stop():
-    stop_event.clear()
-
-def main_loop():
-    clear_stop()
-
-    logger.log("------ INICIALIZANDO ------")
+def main_loop(stop_event):
+    logger.log("=========== INITIALIZING ===========")
     time.sleep(3)
     state.reset_state()
     pyautogui.PAUSE = 0.3
     pyautogui.FAILSAFE = False
     STATS.energia_inicial = read_energy()
-    logger.log(f"Energia inicial detectada: {STATS.energia_inicial}")
+    logger.log(f"Starting energy detected: {STATS.energia_inicial}")
 
     while not stop_event.is_set():
         if tempo_estourou_stop():
-            logger.log("Tempo limite atingido.")
+            logger.log("Max time reached.")
             break
 
         if tempo_estourou_reset():
@@ -50,13 +41,13 @@ def main_loop():
         find_and_click("march.png", region_key="march", confidence=0.30, tries=2)
 
     if stop_event.is_set():
-        logger.log("Parada solicitada pelo usuário.")
-        logger.log("======== DATA ========")
+        logger.log("Stopping requested by user.")
+        logger.log("=========== DATA ===========")
         STATS.energia_final = read_energy()
         STATS.close_session()
       
 
-    logger.log("Bot finalizado.")
+    logger.log("Bot finished.")
 
 if __name__ == "__main__":
-    main_loop()
+    main_loop(Event())

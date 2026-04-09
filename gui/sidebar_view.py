@@ -1,68 +1,83 @@
 import customtkinter as ctk
 
 
-class Sidebar(ctk.CTkFrame):
-    def __init__(
-    self,
-    master,
-    tema_callback,
-    dashboard_callback,
-    config_callback,
-    logs_callback,
-    stats_callback
-    ):
+class SidebarView(ctk.CTkFrame):
+    def __init__(self, master, on_nav_change=None, on_theme_change=None):
         super().__init__(master, width=260, corner_radius=0)
 
+        self.on_nav_change = on_nav_change
+        self.on_theme_change = on_theme_change
+
         self.grid_propagate(False)
+
+        self._build_layout()
+
+    def _build_layout(self):
+        self.grid_rowconfigure(7, weight=1)
         self.grid_columnconfigure(0, weight=1)
-        self.grid_rowconfigure(8, weight=1)
 
-        self.lbl_titulo = ctk.CTkLabel(
+        self.title_label = ctk.CTkLabel(
             self,
-            text="Automação WVOW",
-            font=ctk.CTkFont(size=24, weight="bold")
+            text="WVOW Automation",
+            font=ctk.CTkFont(size=24, weight="bold"),
+            anchor="w",
         )
-        self.lbl_titulo.grid(row=0, column=0, padx=20, pady=(25, 8), sticky="w")
+        self.title_label.grid(row=0, column=0, padx=20, pady=(22, 4), sticky="ew")
 
-        self.lbl_subtitulo = ctk.CTkLabel(
+        self.subtitle_label = ctk.CTkLabel(
             self,
-            text="Painel inicial",
-            font=ctk.CTkFont(size=13)
+            text="Control Panel",
+            font=ctk.CTkFont(size=16),
+            anchor="w",
         )
-        self.lbl_subtitulo.grid(row=1, column=0, padx=20, pady=(0, 20), sticky="w")
+        self.subtitle_label.grid(row=1, column=0, padx=20, pady=(0, 18), sticky="ew")
 
-        self.btn_dashboard = ctk.CTkButton(
-    self,
-    text="Dashboard",
-    command=dashboard_callback
-    )
-        self.btn_dashboard.grid(row=2, column=0, padx=20, pady=8, sticky="ew")
+        button_height = 48
 
-        self.btn_config = ctk.CTkButton(
+        self.main_button = ctk.CTkButton(
             self,
-            text="Configurações",
-            command=config_callback
+            text="Main",
+            height=button_height,
+            command=lambda: self._handle_nav("main"),
         )
-        self.btn_config.grid(row=3, column=0, padx=20, pady=8, sticky="ew")
+        self.main_button.grid(row=2, column=0, padx=18, pady=(0, 12), sticky="ew")
 
-        self.btn_logs = ctk.CTkButton(
+        self.settings_button = ctk.CTkButton(
+            self,
+            text="Settings",
+            height=button_height,
+            command=lambda: self._handle_nav("settings"),
+        )
+        self.settings_button.grid(row=3, column=0, padx=18, pady=(0, 12), sticky="ew")
+
+        self.logs_button = ctk.CTkButton(
             self,
             text="Logs",
-            command=logs_callback
+            height=button_height,
+            command=lambda: self._handle_nav("logs"),
         )
-        self.btn_logs.grid(row=4, column=0, padx=20, pady=8, sticky="ew")
+        self.logs_button.grid(row=4, column=0, padx=18, pady=(0, 12), sticky="ew")
 
-        self.btn_stats = ctk.CTkButton(
+        self.stats_button = ctk.CTkButton(
             self,
-            text="Estatísticas",
-            command=stats_callback
+            text="Statistics",
+            height=button_height,
+            command=lambda: self._handle_nav("statistics"),
         )
-        self.btn_stats.grid(row=5, column=0, padx=20, pady=8, sticky="ew")
+        self.stats_button.grid(row=5, column=0, padx=18, pady=(0, 12), sticky="ew")
 
-        self.menu_tema = ctk.CTkOptionMenu(
-                self,
-                values=["Dark", "Light", "System"],
-                command=tema_callback
-                )
-        self.menu_tema.set("Dark")
-        self.menu_tema.grid(row=9, column=0, padx=20, pady=(10, 25), sticky="ew")
+        self.theme_menu = ctk.CTkOptionMenu(
+            self,
+            values=["Dark", "Light", "System"],
+            command=self._handle_theme_change,
+        )
+        self.theme_menu.set("Dark")
+        self.theme_menu.grid(row=8, column=0, padx=18, pady=18, sticky="ew")
+
+    def _handle_nav(self, view_name):
+        if self.on_nav_change:
+            self.on_nav_change(view_name)
+
+    def _handle_theme_change(self, theme_name):
+        if self.on_theme_change:
+            self.on_theme_change(theme_name)

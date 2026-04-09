@@ -1,128 +1,193 @@
-import threading
-import time
+from multiprocessing import Process, Event, Queue
+from queue import Empty
+
 import customtkinter as ctk
 
-from main import main_loop, request_stop
-from core.state import STATE
-from gui.dashboard_view import Dashboard
-from gui.sidebar_view import Sidebar
+from gui.sidebar_view import SidebarView
+from gui.dashboard_view import DashboardView
+from bot_runner import run_bot
 
 
 class App(ctk.CTk):
     def __init__(self):
         super().__init__()
 
-        self.title("Automação WVOW")
+        self.title("WVOW Automation")
         self.geometry("980x620")
         self.minsize(900, 560)
 
-        self.bot_thread = None
-        self.bot_rodando = False
+        ctk.set_appearance_mode("dark")
+
+        self.bot_process = None
+        self.stop_event = None
+        self.log_queue = None
+        self.current_view = None
 
         self.grid_columnconfigure(1, weight=1)
         self.grid_rowconfigure(0, weight=1)
 
-        self.sidebar = Sidebar(
-        self,
-        dashboard_callback=self.mostrar_dashboard,
-        config_callback=self.mostrar_config,
-        logs_callback=self.mostrar_logs,
-        stats_callback=self.mostrar_stats,
-        tema_callback=self.alterar_tema
-    )
+        self.sidebar = SidebarView(
+            self,
+            on_nav_change=self.change_view,
+            on_theme_change=self.change_theme,
+        )
         self.sidebar.grid(row=0, column=0, sticky="ns")
 
-        self.main_area = ctk.CTkFrame(self, corner_radius=0)
-        self.main_area.grid(row=0, column=1, sticky="nsew")
-        self.main_area.grid_columnconfigure(0, weight=1)
-        self.main_area.grid_rowconfigure(0, weight=1)
+        self.main_container = ctk.CTkFrame(self, corner_radius=0)
+        self.main_container.grid(row=0, column=1, sticky="nsew")
+        self.main_container.grid_rowconfigure(0, weight=1)
+        self.main_container.grid_columnconfigure(0, weight=1)
 
-        self.dashboard = Dashboard(
-            self.main_area,
-            iniciar_callback=self.iniciar_bot,
-            parar_callback=self.parar_bot
-        )
-        self.dashboard.grid(row=0, column=0, sticky="nsew")
+        self.change_view("main")
 
-        self.dashboard.set_status("Status: parado")
-        self.dashboard.set_resumo(
-            "Bot parado.\n\n"
-            "Clique em Iniciar bot para começar uma nova sessão."
-        )
+        self.after(200, self.check_bot_process)
+        self.after(100, self.process_log_queue)
 
-        self.after(500, self.atualizar_interface)
+    def change_theme(self, theme_name):
+        ctk.set_appearance_mode(theme_name.lower())
 
-    def alterar_tema(self, novo_tema):
-        ctk.set_appearance_mode(novo_tema.lower())
+    def change_view(self, view_name):
+        if self.current_view is not None:
+            self.current_view.destroy()
 
-    def iniciar_bot(self):
-        if self.bot_thread and self.bot_thread.is_alive():
-            self.dashboard.set_status("Status: rodando")
+        if view_name == "main":
+            self.current_view = DashboardView(
+                self.main_container,
+                on_start=self.start_bot,
+                on_stop=self.stop_bot,
+            )
+            self.current_view.grid(row=0, column=0, sticky="nsew")
             return
 
-        agora = time.time()
-        STATE["start"] = agora
-        STATE["evento_reset"] = agora
+        self.current_view = ctk.CTkFrame(self.main_container, corner_radius=0)
+        self.current_view.grid(row=0, column=0, sticky="nsew", padx=20, pady=20)
+        self.current_view.grid_columnconfigure(0, weight=1)
 
-        self.bot_rodando = True
-        self.dashboard.set_status("Status: rodando")
+        title_map = {
+            "settings": "Settings",
+            "logs": "Logs",
+            "statistics": "Statistics",
+        }
 
-        self.bot_thread = threading.Thread(target=main_loop, daemon=True)
-        self.bot_thread.start()
+        subtitle_map = {
+            "settings": "Bot configuration panel.",
+            "logs": "Log monitoring area.",
+            "statistics": "Session statistics area.",
+        }
 
-    def parar_bot(self):
-        request_stop()
-        self.dashboard.set_status("Status: parando...")
+        title = title_map.get(view_name, "View")
+        subtitle = subtitle_map.get(view_name, "")
 
-    def atualizar_interface(self):
-        thread_viva = self.bot_thread and self.bot_thread.is_alive()
-
-        if thread_viva:
-            self.bot_rodando = True
-            self.dashboard.set_resumo(self.montar_resumo())
-
-        else:
-            if self.bot_rodando:
-                self.bot_rodando = False
-                self.dashboard.set_status("Status: parado")
-                self.dashboard.set_resumo(
-                    "Bot parado.\n\n"
-                    "Clique em Iniciar bot para começar uma nova sessão."
-                )
-
-        self.after(500, self.atualizar_interface)
-
-    def montar_resumo(self):
-        agora = time.time()
-        inicio = STATE.get("start", agora)
-        ultimo_reset = STATE.get("evento_reset", inicio)
-
-        tempo_total = max(0, int(agora - inicio))
-        tempo_reset = max(0, int(agora - ultimo_reset))
-
-        return (
-            "Monitor do bot\n\n"
-            f"Tempo total da sessão: {self.formatar_tempo(tempo_total)}\n"
-            f"Tempo desde o último reset: {self.formatar_tempo(tempo_reset)}\n\n"
-            f"Sessão iniciada em: {time.strftime('%H:%M:%S', time.localtime(inicio))}\n"
-            f"Último reset em: {time.strftime('%H:%M:%S', time.localtime(ultimo_reset))}"
+        title_label = ctk.CTkLabel(
+            self.current_view,
+            text=title,
+            font=ctk.CTkFont(size=34, weight="bold"),
+            anchor="w",
         )
+        title_label.grid(row=0, column=0, sticky="ew", pady=(0, 8))
 
-    @staticmethod
-    def formatar_tempo(total_segundos):
-        horas = total_segundos // 3600
-        minutos = (total_segundos % 3600) // 60
-        segundos = total_segundos % 60
-        return f"{horas:02d}:{minutos:02d}:{segundos:02d}"
-    
-    def mostrar_dashboard(self):
-        self.dashboard.grid(row=0, column=0, sticky="nsew")
+        subtitle_label = ctk.CTkLabel(
+            self.current_view,
+            text=subtitle,
+            font=ctk.CTkFont(size=16),
+            anchor="w",
+            justify="left",
+        )
+        subtitle_label.grid(row=1, column=0, sticky="nw")
 
-    def mostrar_config(self):
-        print("Tela de configurações ainda não implementada")
+    def start_bot(self):
+        self.cleanup_finished_process(force=True)
 
-    def mostrar_logs(self):
-        print("Tela de logs ainda não implementada")
+        if self.bot_process and self.bot_process.is_alive():
+            if isinstance(self.current_view, DashboardView):
+                self.current_view.set_status("Status: running")
+                self.current_view.append_log("Bot is already running.")
+            return
 
-    def mostrar_stats(self):
-        print("Tela de estatísticas ainda não implementada")
+        if isinstance(self.current_view, DashboardView):
+            self.current_view.set_status("Status: starting...")
+            self.current_view.append_log("Starting bot process...")
+
+        self.stop_event = Event()
+        self.log_queue = Queue()
+
+        self.bot_process = Process(
+            target=run_bot,
+            args=(self.stop_event, self.log_queue),
+        )
+        self.bot_process.start()
+
+        if isinstance(self.current_view, DashboardView):
+            self.current_view.set_status("Status: running")
+
+    def stop_bot(self):
+        if self.stop_event and self.bot_process:
+            self.stop_event.set()
+
+            if isinstance(self.current_view, DashboardView):
+                self.current_view.set_status("Status: stopping...")
+                self.current_view.append_log("Stop requested by user.")
+
+    def cleanup_finished_process(self, force=False):
+        if not self.bot_process:
+            return
+
+        finished = False
+
+        if force:
+            try:
+                self.bot_process.join(timeout=0.1)
+            except Exception:
+                pass
+
+        if self.bot_process.exitcode is not None:
+            finished = True
+        elif not self.bot_process.is_alive():
+            try:
+                self.bot_process.join(timeout=0.1)
+            except Exception:
+                pass
+            finished = True
+
+        if finished:
+            self.bot_process = None
+            self.stop_event = None
+            self.log_queue = None
+
+            if isinstance(self.current_view, DashboardView):
+                self.current_view.set_status("Status: stopped")
+
+    def check_bot_process(self):
+        try:
+            self.cleanup_finished_process()
+        except Exception as e:
+            print(f"[GUI ERROR] check_bot_process: {e}")
+        finally:
+            self.after(200, self.check_bot_process)
+
+    def process_log_queue(self):
+        try:
+            if self.log_queue is not None:
+                processed = 0
+                max_per_cycle = 50
+
+                while processed < max_per_cycle:
+                    message = self.log_queue.get_nowait()
+
+                    if message == "__BOT_FINISHED__":
+                        if isinstance(self.current_view, DashboardView):
+                            self.current_view.append_log("Bot finished.")
+                        self.cleanup_finished_process(force=True)
+                        break
+
+                    if isinstance(self.current_view, DashboardView):
+                        self.current_view.append_log(message)
+
+                    processed += 1
+
+        except Empty:
+            pass
+        except Exception as e:
+            print(f"[GUI ERROR] process_log_queue: {e}")
+        finally:
+            self.after(100, self.process_log_queue)
