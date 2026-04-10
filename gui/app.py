@@ -1,5 +1,6 @@
 from multiprocessing import Process, Event, Queue
 from queue import Empty
+import time
 
 import customtkinter as ctk
 
@@ -95,18 +96,25 @@ class App(ctk.CTk):
         )
         subtitle_label.grid(row=1, column=0, sticky="nw")
 
-    def start_bot(self):
-        self.cleanup_finished_process(force=True)
+    def append_dashboard_log(self, message):
+        if isinstance(self.current_view, DashboardView):
+            self.current_view.append_log(message)
 
-        if self.bot_process and self.bot_process.is_alive():
-            if isinstance(self.current_view, DashboardView):
-                self.current_view.set_status("Status: running")
-                self.current_view.append_log("Bot is already running.")
+    def set_dashboard_status(self, message):
+        if isinstance(self.current_view, DashboardView):
+            self.current_view.set_status(message)
+
+    def start_bot(self):
+        # Limpa qualquer resto de processo antigo antes de iniciar
+        self.force_cleanup_previous_process()
+
+        if self.bot_process is not None and self.bot_process.is_alive():
+            self.set_dashboard_status("Status: running")
+            self.append_dashboard_log("Bot is already running.")
             return
 
-        if isinstance(self.current_view, DashboardView):
-            self.current_view.set_status("Status: starting...")
-            self.current_view.append_log("Starting bot process...")
+        self.set_dashboard_status("Status: starting...")
+        self.append_dashboard_log("Starting bot process...")
 
         self.stop_event = Event()
         self.log_queue = Queue()
@@ -114,52 +122,97 @@ class App(ctk.CTk):
         self.bot_process = Process(
             target=run_bot,
             args=(self.stop_event, self.log_queue),
+            daemon=False,
         )
         self.bot_process.start()
 
-        if isinstance(self.current_view, DashboardView):
-            self.current_view.set_status("Status: running")
+        self.set_dashboard_status("Status: running")
 
     def stop_bot(self):
-        if self.stop_event and self.bot_process:
-            self.stop_event.set()
-
-            if isinstance(self.current_view, DashboardView):
-                self.current_view.set_status("Status: stopping...")
-                self.current_view.append_log("Stop requested by user.")
-
-    def cleanup_finished_process(self, force=False):
         if not self.bot_process:
+            self.set_dashboard_status("Status: stopped")
+            self.append_dashboard_log("No bot process to stop.")
             return
 
-        finished = False
+        self.append_dashboard_log("Stop requested by user.")
+        self.set_dashboard_status("Status: stopping...")
 
-        if force:
+        if self.stop_event:
+            self.stop_event.set()
+
+        # tenta encerrar
+        self.after(1500, self.ensure_process_stopped)
+
+    def ensure_process_stopped(self):
+        if not self.bot_process:
+            self.finalize_process_cleanup()
+            return
+
+        if self.bot_process.is_alive():
+            self.append_dashboard_log("Bot did not exit in time. Terminating process...")
             try:
-                self.bot_process.join(timeout=0.1)
+                self.bot_process.terminate()
+            except Exception as e:
+                self.append_dashboard_log(f"Terminate error: {e}")
+
+            try:
+                self.bot_process.join(timeout=2)
+            except Exception as e:
+                self.append_dashboard_log(f"Join after terminate error: {e}")
+
+        self.finalize_process_cleanup()
+
+    def finalize_process_cleanup(self):
+        if self.bot_process:
+            try:
+                if self.bot_process.is_alive():
+                    return
+                self.bot_process.join(timeout=0.2)
             except Exception:
                 pass
 
-        if self.bot_process.exitcode is not None:
-            finished = True
-        elif not self.bot_process.is_alive():
+        self.bot_process = None
+        self.stop_event = None
+
+        if self.log_queue is not None:
             try:
-                self.bot_process.join(timeout=0.1)
+                self.log_queue.close()
             except Exception:
                 pass
-            finished = True
+            try:
+                self.log_queue.cancel_join_thread()
+            except Exception:
+                pass
 
-        if finished:
-            self.bot_process = None
+        self.log_queue = None
+        self.set_dashboard_status("Status: stopped")
+
+    def force_cleanup_previous_process(self):
+        if not self.bot_process:
             self.stop_event = None
             self.log_queue = None
+            return
 
-            if isinstance(self.current_view, DashboardView):
-                self.current_view.set_status("Status: stopped")
+        try:
+            if self.bot_process.is_alive():
+                if self.stop_event:
+                    self.stop_event.set()
+
+                self.bot_process.join(timeout=1.0)
+
+                if self.bot_process.is_alive():
+                    self.append_dashboard_log("Cleaning up stale bot process...")
+                    self.bot_process.terminate()
+                    self.bot_process.join(timeout=2.0)
+        except Exception as e:
+            self.append_dashboard_log(f"Cleanup error: {e}")
+
+        self.finalize_process_cleanup()
 
     def check_bot_process(self):
         try:
-            self.cleanup_finished_process()
+            if self.bot_process is not None and not self.bot_process.is_alive():
+                self.finalize_process_cleanup()
         except Exception as e:
             print(f"[GUI ERROR] check_bot_process: {e}")
         finally:
@@ -175,14 +228,13 @@ class App(ctk.CTk):
                     message = self.log_queue.get_nowait()
 
                     if message == "__BOT_FINISHED__":
-                        if isinstance(self.current_view, DashboardView):
-                            self.current_view.append_log("Bot finished.")
-                        self.cleanup_finished_process(force=True)
-                        break
+                        self.append_dashboard_log("Bot finished.")
+                        # não limpa imediatamente; deixa o check_bot_process
+                        # confirmar que o processo realmente morreu
+                        processed += 1
+                        continue
 
-                    if isinstance(self.current_view, DashboardView):
-                        self.current_view.append_log(message)
-
+                    self.append_dashboard_log(message)
                     processed += 1
 
         except Empty:

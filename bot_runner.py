@@ -7,6 +7,11 @@ def run_bot(stop_event, log_queue):
 
     try:
         main_loop(stop_event)
+    except Exception as e:
+        try:
+            log_queue.put(f"[BOT ERROR] {e}")
+        except Exception:
+            pass
     finally:
         try:
             log_queue.put("__BOT_FINISHED__")
