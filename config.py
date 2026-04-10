@@ -3,7 +3,7 @@ import os
 #==== CONFIG ====
 DEBUG = False
 FIRELIZARD = True
-
+SPEED_MODE = "SLOW"
 
 #====REGIONS=====
 REGIONS = {
@@ -36,7 +36,7 @@ COORDS = {
 
 # ===== TEMPOS =====
 TEMPO_STOP = 6000 #3600 por hora
-TEMPO_RESET = 500  #450 padrão ~ 7,5 min
+TEMPO_RESET = 600  #450 padrão ~ 7,5 min
 
 # ===== COMPORTAMENTO =====
 ATAQUE_RAILGUN = False

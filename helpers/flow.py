@@ -11,7 +11,6 @@ from helpers.clicks import click_region
 from core.statistics import STATS
 from helpers.logger import log, debug
 import config
-import statistics
 
 from helpers.paths import cmd_path
 from datetime import datetime
@@ -19,12 +18,24 @@ from datetime import datetime
 DEBUG_CMD = False
 FIRELIZARD = config.FIRELIZARD
 
+def sleep_speed2(delay):
+    if config.SPEED_MODE == "SLOW":
+        time.sleep(delay * 3)
+    elif config.SPEED_MODE == "NORMAL":
+        time.sleep(delay)
+    elif config.SPEED_MODE == "FAST":
+        time.sleep(delay * 0.1)
+    else:
+        time.sleep(delay)
+
 def mainfuct():
     if not find_exists("lupa.png", region_key="lupa", start_conf=0.5, min_conf=0.3):
         check_error()
         return False
 
     click_region("lupa_click")
+
+    sleep_speed2(0.3)
 
     if FIRELIZARD:
         if not find_and_click("firelizard.png", region_key="firelizard", confidence=0.7, tries=5):
@@ -40,7 +51,8 @@ def mainfuct():
     else:
         click_rebel_center(delay_before=0.5, jitter=8)
 
-    time.sleep(0.2)
+    #time.sleep(0.2)
+    sleep_speed2(0.2)
   
     if FIRELIZARD:
         if not find_and_click(
@@ -54,6 +66,8 @@ def mainfuct():
     else:
         if not find_and_click("attk.png", region_key="attk", confidence=0.7, tries=5):
             return False
+        
+    sleep_speed2(0.2)
 
     if not find_and_click("march.png", region_key="march", confidence=0.30, tries=5):
         return False
