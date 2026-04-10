@@ -33,8 +33,8 @@ def find_exists(nome_img, region_key=None,
 
     return False
 
-def find_image(nome_img, region_key=None, confidence=0.45):
-    path = img_path(nome_img)
+def find_image(nome_img, region_key=None, confidence=0.45, pasta="bsfuctpath"):
+    path = img_path(nome_img, pasta=pasta)
     region = REGIONS.get(region_key)
 
     try:
@@ -53,10 +53,11 @@ def find_and_click(
     confidence=0.45,
     tries=5,
     retry_delay=0.2,
-    jitter=4
+    jitter=4,
+    pasta="bsfuctpath"
 ):
     for tentativa in range(1, tries + 1):
-        box = find_image(nome_img, region_key, confidence)
+        box = find_image(nome_img, region_key, confidence, pasta=pasta)
 
         if DEBUG:
             debug(f"[FIND] {nome_img} try={tentativa}/{tries} "

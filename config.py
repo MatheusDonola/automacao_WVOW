@@ -21,7 +21,8 @@ REGIONS = {
     "CMD_FSTEP":(1739, 225, 62, 407),
     "attk":(1242, 664, 131, 47),
     "ENERGY":(94, 201, 200, 44),
-    "lupa_click":(1773, 977, 56, 40)
+    "lupa_click":(1773, 977, 56, 40),
+    "WORLD": (20, 871, 191, 202)
 }
 
 COORDS = {
@@ -34,8 +35,8 @@ COORDS = {
 }
 
 # ===== TEMPOS =====
-TEMPO_STOP = 6900 #3600 por hora
-TEMPO_RESET = 450  #450 padrão ~ 7,5 min
+TEMPO_STOP = 6000 #3600 por hora
+TEMPO_RESET = 500  #450 padrão ~ 7,5 min
 
 # ===== COMPORTAMENTO =====
 ATAQUE_RAILGUN = False
