@@ -3,7 +3,7 @@ import os
 #==== CONFIG ====
 DEBUG = False
 FIRELIZARD = True
-SPEED_MODE = "NORMAL"
+SPEED_MODE = "FAST"
 
 #====REGIONS=====
 REGIONS = {
@@ -35,7 +35,7 @@ COORDS = {
 }
 
 # ===== TEMPOS =====
-TEMPO_STOP = 5500 #3600 por hora
+TEMPO_STOP = 3600 #3600 por hora
 TEMPO_RESET = 600  #450 padrão ~ 7,5 min
 
 # ===== COMPORTAMENTO =====

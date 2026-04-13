@@ -51,18 +51,18 @@ class ConfigView(ctk.CTkFrame):
         self.mode_menu.set("Firelizard" if config.FIRELIZARD else "Rebel")
 
         # ===== TEMPO STOP =====
-        self.stop_label = ctk.CTkLabel(self.card, text="TEMPO_STOP (segundos)")
+        self.stop_label = ctk.CTkLabel(self.card, text="MAX TIME (3600 sec = 1 hour)")
         self.stop_label.grid(row=2, column=0, padx=20, pady=10, sticky="w")
 
-        self.stop_entry = ctk.CTkEntry(self.card, placeholder_text="Digite o tempo em segundos")
+        self.stop_entry = ctk.CTkEntry(self.card, placeholder_text="Type the time in seconds")
         self.stop_entry.grid(row=2, column=1, padx=20, pady=10, sticky="ew")
         self.stop_entry.insert(0, str(config.TEMPO_STOP))
 
         # ===== TEMPO RESET =====
-        self.reset_label = ctk.CTkLabel(self.card, text="TEMPO_RESET (segundos)")
+        self.reset_label = ctk.CTkLabel(self.card, text="CACHE RESET(recommended 600)")
         self.reset_label.grid(row=3, column=0, padx=20, pady=10, sticky="w")
 
-        self.reset_entry = ctk.CTkEntry(self.card, placeholder_text="Digite o tempo em segundos")
+        self.reset_entry = ctk.CTkEntry(self.card, placeholder_text="Type the time in second")
         self.reset_entry.grid(row=3, column=1, padx=20, pady=10, sticky="ew")
         self.reset_entry.insert(0, str(config.TEMPO_RESET))
 
@@ -73,7 +73,7 @@ class ConfigView(ctk.CTkFrame):
         # ===== BOTÃO SALVAR =====
         self.save_button = ctk.CTkButton(
             self.card,
-            text="Salvar configurações",
+            text="Save Configurations",
             command=self.save_config
         )
         self.save_button.grid(row=5, column=0, columnspan=2, padx=20, pady=(10, 20), sticky="ew")
@@ -85,7 +85,7 @@ class ConfigView(ctk.CTkFrame):
 
             if tempo_stop < 0 or tempo_reset < 0:
                 self.status_label.configure(
-                    text="Os tempos devem ser maiores ou iguais a 0.",
+                    text="The time should be higher than 0",
                     text_color="red"
                 )
                 return
@@ -137,13 +137,13 @@ class ConfigView(ctk.CTkFrame):
                 f.write(content)
 
             self.status_label.configure(
-                text="Configurações salvas com sucesso.",
+                text="Succes saving the configs.",
                 text_color="lightgreen"
             )
 
         except ValueError:
             self.status_label.configure(
-                text="TEMPO_STOP e TEMPO_RESET devem ser números inteiros.",
+                text="MAX TIME and CACHE RESET must be integers",
                 text_color="red"
             )
         except Exception as e:
