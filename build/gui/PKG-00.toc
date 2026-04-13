@@ -43,13 +43,13 @@
    'D:\\VSCODE '
    'PASTAS\\AutomacaoVow\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks\\pyi_rth_pkgutil.py',
    'PYSOURCE'),
-  ('pyi_rth_multiprocessing',
-   'D:\\VSCODE '
-   'PASTAS\\AutomacaoVow\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks\\pyi_rth_multiprocessing.py',
-   'PYSOURCE'),
   ('pyi_rth__tkinter',
    'D:\\VSCODE '
    'PASTAS\\AutomacaoVow\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks\\pyi_rth__tkinter.py',
+   'PYSOURCE'),
+  ('pyi_rth_multiprocessing',
+   'D:\\VSCODE '
+   'PASTAS\\AutomacaoVow\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks\\pyi_rth_multiprocessing.py',
    'PYSOURCE'),
   ('gui', 'D:\\VSCODE PASTAS\\AutomacaoVow\\gui.py', 'PYSOURCE')],
  'python312.dll',

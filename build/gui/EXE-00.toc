@@ -66,19 +66,19 @@
    'D:\\VSCODE '
    'PASTAS\\AutomacaoVow\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks\\pyi_rth_pkgutil.py',
    'PYSOURCE'),
-  ('pyi_rth_multiprocessing',
-   'D:\\VSCODE '
-   'PASTAS\\AutomacaoVow\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks\\pyi_rth_multiprocessing.py',
-   'PYSOURCE'),
   ('pyi_rth__tkinter',
    'D:\\VSCODE '
    'PASTAS\\AutomacaoVow\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks\\pyi_rth__tkinter.py',
+   'PYSOURCE'),
+  ('pyi_rth_multiprocessing',
+   'D:\\VSCODE '
+   'PASTAS\\AutomacaoVow\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks\\pyi_rth_multiprocessing.py',
    'PYSOURCE'),
   ('gui', 'D:\\VSCODE PASTAS\\AutomacaoVow\\gui.py', 'PYSOURCE')],
  [],
  False,
  False,
- 1775675443,
+ 1775853988,
  [('runw.exe',
    'D:\\VSCODE '
    'PASTAS\\AutomacaoVow\\venv\\Lib\\site-packages\\PyInstaller\\bootloader\\Windows-64bit-intel\\runw.exe',

@@ -1,11 +1,11 @@
 from multiprocessing import Process, Event, Queue
 from queue import Empty
-import time
 
 import customtkinter as ctk
 
 from gui.sidebar_view import SidebarView
 from gui.dashboard_view import DashboardView
+from gui.config_view import ConfigView
 from bot_runner import run_bot
 
 
@@ -60,18 +60,21 @@ class App(ctk.CTk):
             self.current_view.grid(row=0, column=0, sticky="nsew")
             return
 
+        if view_name == "settings":
+            self.current_view = ConfigView(self.main_container)
+            self.current_view.grid(row=0, column=0, sticky="nsew", padx=20, pady=20)
+            return
+
         self.current_view = ctk.CTkFrame(self.main_container, corner_radius=0)
         self.current_view.grid(row=0, column=0, sticky="nsew", padx=20, pady=20)
         self.current_view.grid_columnconfigure(0, weight=1)
 
         title_map = {
-            "settings": "Settings",
             "logs": "Logs",
             "statistics": "Statistics",
         }
 
         subtitle_map = {
-            "settings": "Bot configuration panel.",
             "logs": "Log monitoring area.",
             "statistics": "Session statistics area.",
         }
@@ -105,7 +108,6 @@ class App(ctk.CTk):
             self.current_view.set_status(message)
 
     def start_bot(self):
-        # Limpa qualquer resto de processo antigo antes de iniciar
         self.force_cleanup_previous_process()
 
         if self.bot_process is not None and self.bot_process.is_alive():
@@ -140,7 +142,6 @@ class App(ctk.CTk):
         if self.stop_event:
             self.stop_event.set()
 
-        # tenta encerrar
         self.after(1500, self.ensure_process_stopped)
 
     def ensure_process_stopped(self):
@@ -229,8 +230,6 @@ class App(ctk.CTk):
 
                     if message == "__BOT_FINISHED__":
                         self.append_dashboard_log("Bot finished.")
-                        # não limpa imediatamente; deixa o check_bot_process
-                        # confirmar que o processo realmente morreu
                         processed += 1
                         continue
 

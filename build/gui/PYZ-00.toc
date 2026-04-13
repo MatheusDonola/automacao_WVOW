@@ -459,6 +459,7 @@
   ('bisect',
    'C:\\Users\\Matheus\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\bisect.py',
    'PYMODULE'),
+  ('bot_runner', 'D:\\VSCODE PASTAS\\AutomacaoVow\\bot_runner.py', 'PYMODULE'),
   ('bz2',
    'C:\\Users\\Matheus\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\bz2.py',
    'PYMODULE'),

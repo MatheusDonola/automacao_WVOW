@@ -156,6 +156,8 @@ imports:
  &#8226;   <a href="#keyword">keyword</a>
  &#8226;   <a href="#linecache">linecache</a>
  &#8226;   <a href="#locale">locale</a>
+ &#8226;   <a href="#multiprocessing">multiprocessing</a>
+ &#8226;   <a href="#multiprocessing.freeze_support">multiprocessing.freeze_support</a>
  &#8226;   <a href="#ntpath">ntpath</a>
  &#8226;   <a href="#operator">operator</a>
  &#8226;   <a href="#os">os</a>
@@ -5187,6 +5189,24 @@ imported by:
 </div>
 
 <div class="node">
+  <a name="bot_runner"></a>
+  <a target="code" href="///D:/VSCODE%20PASTAS/AutomacaoVow/bot_runner.py" type="text/plain"><tt>bot_runner</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#helpers">helpers</a>
+ &#8226;   <a href="#helpers.logger">helpers.logger</a>
+ &#8226;   <a href="#main">main</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#gui.app">gui.app</a>
+
+  </div>
+
+</div>
+
+<div class="node">
   <a name="builtins"></a>
   <tt>builtins</tt> <span class="moduletype"><i>(builtin module)</i></span>  <div class="import">
 imported by:
@@ -5939,7 +5959,6 @@ imports:
   <div class="import">
 imported by:
     <a href="#core">core</a>
- &#8226;   <a href="#gui.app">gui.app</a>
  &#8226;   <a href="#helpers.timers">helpers.timers</a>
  &#8226;   <a href="#main">main</a>
 
@@ -11286,13 +11305,16 @@ imported by:
   <a target="code" href="///D:/VSCODE%20PASTAS/AutomacaoVow/gui/app.py" type="text/plain"><tt>gui.app</tt></a>
 <span class="moduletype">SourceModule</span>  <div class="import">
 imports:
-    <a href="#core.state">core.state</a>
+    <a href="#bot_runner">bot_runner</a>
  &#8226;   <a href="#customtkinter">customtkinter</a>
  &#8226;   <a href="#gui">gui</a>
  &#8226;   <a href="#gui.dashboard_view">gui.dashboard_view</a>
  &#8226;   <a href="#gui.sidebar_view">gui.sidebar_view</a>
- &#8226;   <a href="#main">main</a>
- &#8226;   <a href="#threading">threading</a>
+ &#8226;   <a href="#multiprocessing">multiprocessing</a>
+ &#8226;   <a href="#multiprocessing.Event">multiprocessing.Event</a>
+ &#8226;   <a href="#multiprocessing.Process">multiprocessing.Process</a>
+ &#8226;   <a href="#multiprocessing.Queue">multiprocessing.Queue</a>
+ &#8226;   <a href="#queue">queue</a>
  &#8226;   <a href="#time">time</a>
 
   </div>
@@ -11418,7 +11440,8 @@ imported by:
   <a target="code" href="///D:/VSCODE%20PASTAS/AutomacaoVow/helpers/__init__.py" type="text/plain"><tt>helpers</tt></a>
 <span class="moduletype">Package</span>  <div class="import">
 imported by:
-    <a href="#helpers.clicks">helpers.clicks</a>
+    <a href="#bot_runner">bot_runner</a>
+ &#8226;   <a href="#helpers.clicks">helpers.clicks</a>
  &#8226;   <a href="#helpers.flow">helpers.flow</a>
  &#8226;   <a href="#helpers.logger">helpers.logger</a>
  &#8226;   <a href="#helpers.ocr">helpers.ocr</a>
@@ -11467,7 +11490,6 @@ imports:
  &#8226;   <a href="#helpers.paths">helpers.paths</a>
  &#8226;   <a href="#helpers.screen">helpers.screen</a>
  &#8226;   <a href="#pyautogui">pyautogui</a>
- &#8226;   <a href="#statistics">statistics</a>
  &#8226;   <a href="#time">time</a>
 
   </div>
@@ -11490,7 +11512,8 @@ imports:
   </div>
   <div class="import">
 imported by:
-    <a href="#core.statistics">core.statistics</a>
+    <a href="#bot_runner">bot_runner</a>
+ &#8226;   <a href="#core.statistics">core.statistics</a>
  &#8226;   <a href="#helpers.flow">helpers.flow</a>
  &#8226;   <a href="#helpers.screen">helpers.screen</a>
  &#8226;   <a href="#helpers.timers">helpers.timers</a>
@@ -11513,6 +11536,7 @@ imports:
  &#8226;   <a href="#pyautogui">pyautogui</a>
  &#8226;   <a href="#pytesseract">pytesseract</a>
  &#8226;   <a href="#re">re</a>
+ &#8226;   <a href="#shutil">shutil</a>
 
   </div>
   <div class="import">
@@ -11537,7 +11561,6 @@ imports:
 imported by:
     <a href="#helpers.flow">helpers.flow</a>
  &#8226;   <a href="#helpers.screen">helpers.screen</a>
- &#8226;   <a href="#main">main</a>
 
   </div>
 
@@ -11793,6 +11816,7 @@ imports:
  &#8226;   <a href="#importlib">importlib</a>
  &#8226;   <a href="#importlib._bootstrap">importlib._bootstrap</a>
  &#8226;   <a href="#importlib._bootstrap_external">importlib._bootstrap_external</a>
+ &#8226;   <a href="#importlib.machinery">importlib.machinery</a>
  &#8226;   <a href="#sys">sys</a>
  &#8226;   <a href="#warnings">warnings</a>
 
@@ -11928,6 +11952,7 @@ imports:
   <div class="import">
 imported by:
     <a href="#ctypes.util">ctypes.util</a>
+ &#8226;   <a href="#importlib">importlib</a>
  &#8226;   <a href="#importlib.abc">importlib.abc</a>
  &#8226;   <a href="#inspect">inspect</a>
  &#8226;   <a href="#pkgutil">pkgutil</a>
@@ -12774,18 +12799,18 @@ imports:
  &#8226;   <a href="#helpers.flow">helpers.flow</a>
  &#8226;   <a href="#helpers.logger">helpers.logger</a>
  &#8226;   <a href="#helpers.ocr">helpers.ocr</a>
- &#8226;   <a href="#helpers.paths">helpers.paths</a>
  &#8226;   <a href="#helpers.safety">helpers.safety</a>
  &#8226;   <a href="#helpers.screen">helpers.screen</a>
  &#8226;   <a href="#helpers.timers">helpers.timers</a>
+ &#8226;   <a href="#multiprocessing">multiprocessing</a>
+ &#8226;   <a href="#multiprocessing.Event">multiprocessing.Event</a>
  &#8226;   <a href="#pyautogui">pyautogui</a>
- &#8226;   <a href="#threading">threading</a>
  &#8226;   <a href="#time">time</a>
 
   </div>
   <div class="import">
 imported by:
-    <a href="#gui.app">gui.app</a>
+    <a href="#bot_runner">bot_runner</a>
 
   </div>
 
@@ -12935,10 +12960,14 @@ imports:
     <a href="#multiprocessing">multiprocessing</a>
  &#8226;   <a href="#multiprocessing.AuthenticationError">multiprocessing.AuthenticationError</a>
  &#8226;   <a href="#multiprocessing.BufferTooShort">multiprocessing.BufferTooShort</a>
+ &#8226;   <a href="#multiprocessing.Event">multiprocessing.Event</a>
+ &#8226;   <a href="#multiprocessing.Process">multiprocessing.Process</a>
+ &#8226;   <a href="#multiprocessing.Queue">multiprocessing.Queue</a>
  &#8226;   <a href="#multiprocessing.TimeoutError">multiprocessing.TimeoutError</a>
  &#8226;   <a href="#multiprocessing.connection">multiprocessing.connection</a>
  &#8226;   <a href="#multiprocessing.context">multiprocessing.context</a>
  &#8226;   <a href="#multiprocessing.forkserver">multiprocessing.forkserver</a>
+ &#8226;   <a href="#multiprocessing.freeze_support">multiprocessing.freeze_support</a>
  &#8226;   <a href="#multiprocessing.get_context">multiprocessing.get_context</a>
  &#8226;   <a href="#multiprocessing.get_start_method">multiprocessing.get_start_method</a>
  &#8226;   <a href="#multiprocessing.pool">multiprocessing.pool</a>
@@ -12956,6 +12985,9 @@ imports:
   <div class="import">
 imported by:
     <a href="#concurrent.futures.process">concurrent.futures.process</a>
+ &#8226;   <a href="#gui.app">gui.app</a>
+ &#8226;   <a href="#gui.py">gui.py</a>
+ &#8226;   <a href="#main">main</a>
  &#8226;   <a href="#multiprocessing">multiprocessing</a>
  &#8226;   <a href="#multiprocessing.connection">multiprocessing.connection</a>
  &#8226;   <a href="#multiprocessing.context">multiprocessing.context</a>
@@ -13003,6 +13035,43 @@ imported by:
 imported by:
     <a href="#multiprocessing">multiprocessing</a>
  &#8226;   <a href="#multiprocessing.connection">multiprocessing.connection</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="multiprocessing.Event"></a>
+  <a target="code" href="" type="text/plain"><tt>multiprocessing.Event</tt></a>
+<span class="moduletype">MissingModule</span>  <div class="import">
+imported by:
+    <a href="#gui.app">gui.app</a>
+ &#8226;   <a href="#main">main</a>
+ &#8226;   <a href="#multiprocessing">multiprocessing</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="multiprocessing.Process"></a>
+  <a target="code" href="" type="text/plain"><tt>multiprocessing.Process</tt></a>
+<span class="moduletype">MissingModule</span>  <div class="import">
+imported by:
+    <a href="#gui.app">gui.app</a>
+ &#8226;   <a href="#multiprocessing">multiprocessing</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="multiprocessing.Queue"></a>
+  <a target="code" href="" type="text/plain"><tt>multiprocessing.Queue</tt></a>
+<span class="moduletype">MissingModule</span>  <div class="import">
+imported by:
+    <a href="#gui.app">gui.app</a>
+ &#8226;   <a href="#multiprocessing">multiprocessing</a>
 
   </div>
 
@@ -13182,6 +13251,18 @@ imported by:
  &#8226;   <a href="#multiprocessing.context">multiprocessing.context</a>
  &#8226;   <a href="#multiprocessing.popen_forkserver">multiprocessing.popen_forkserver</a>
  &#8226;   <a href="#multiprocessing.util">multiprocessing.util</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="multiprocessing.freeze_support"></a>
+  <a target="code" href="" type="text/plain"><tt>multiprocessing.freeze_support</tt></a>
+<span class="moduletype">MissingModule</span>  <div class="import">
+imported by:
+    <a href="#gui.py">gui.py</a>
+ &#8226;   <a href="#multiprocessing">multiprocessing</a>
 
   </div>
 
@@ -21661,6 +21742,7 @@ imports:
 imported by:
     <a href="#concurrent.futures.process">concurrent.futures.process</a>
  &#8226;   <a href="#concurrent.futures.thread">concurrent.futures.thread</a>
+ &#8226;   <a href="#gui.app">gui.app</a>
  &#8226;   <a href="#multiprocessing.dummy">multiprocessing.dummy</a>
  &#8226;   <a href="#multiprocessing.dummy.connection">multiprocessing.dummy.connection</a>
  &#8226;   <a href="#multiprocessing.managers">multiprocessing.managers</a>
@@ -22136,6 +22218,7 @@ imported by:
  &#8226;   <a href="#argparse">argparse</a>
  &#8226;   <a href="#ctypes.util">ctypes.util</a>
  &#8226;   <a href="#customtkinter.windows.widgets.font.font_manager">customtkinter.windows.widgets.font.font_manager</a>
+ &#8226;   <a href="#helpers.ocr">helpers.ocr</a>
  &#8226;   <a href="#http.server">http.server</a>
  &#8226;   <a href="#multiprocessing.util">multiprocessing.util</a>
  &#8226;   <a href="#numpy.f2py._backends._distutils">numpy.f2py._backends._distutils</a>
@@ -22383,8 +22466,7 @@ imports:
   </div>
   <div class="import">
 imported by:
-    <a href="#helpers.flow">helpers.flow</a>
- &#8226;   <a href="#random">random</a>
+    <a href="#random">random</a>
 
   </div>
 
@@ -22941,10 +23023,8 @@ imported by:
  &#8226;   <a href="#concurrent.futures._base">concurrent.futures._base</a>
  &#8226;   <a href="#concurrent.futures.process">concurrent.futures.process</a>
  &#8226;   <a href="#concurrent.futures.thread">concurrent.futures.thread</a>
- &#8226;   <a href="#gui.app">gui.app</a>
  &#8226;   <a href="#http.cookiejar">http.cookiejar</a>
  &#8226;   <a href="#logging">logging</a>
- &#8226;   <a href="#main">main</a>
  &#8226;   <a href="#multiprocessing.context">multiprocessing.context</a>
  &#8226;   <a href="#multiprocessing.dummy">multiprocessing.dummy</a>
  &#8226;   <a href="#multiprocessing.forkserver">multiprocessing.forkserver</a>
