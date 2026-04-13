@@ -24,6 +24,9 @@ class App(ctk.CTk):
         self.log_queue = None
         self.current_view = None
 
+        self.dashboard_logs = ["Main view is ready."]
+        self.dashboard_status = "Status: stopped"
+
         self.grid_columnconfigure(1, weight=1)
         self.grid_rowconfigure(0, weight=1)
 
@@ -47,6 +50,7 @@ class App(ctk.CTk):
     def change_theme(self, theme_name):
         ctk.set_appearance_mode(theme_name.lower())
 
+
     def change_view(self, view_name):
         if self.current_view is not None:
             self.current_view.destroy()
@@ -58,6 +62,9 @@ class App(ctk.CTk):
                 on_stop=self.stop_bot,
             )
             self.current_view.grid(row=0, column=0, sticky="nsew")
+
+            self.current_view.set_status(self.dashboard_status)
+            self.current_view.load_logs(self.dashboard_logs)
             return
 
         if view_name == "settings":
@@ -100,10 +107,14 @@ class App(ctk.CTk):
         subtitle_label.grid(row=1, column=0, sticky="nw")
 
     def append_dashboard_log(self, message):
+        self.dashboard_logs.append(message)
+
         if isinstance(self.current_view, DashboardView):
             self.current_view.append_log(message)
 
     def set_dashboard_status(self, message):
+        self.dashboard_status = message
+
         if isinstance(self.current_view, DashboardView):
             self.current_view.set_status(message)
 
@@ -242,3 +253,4 @@ class App(ctk.CTk):
             print(f"[GUI ERROR] process_log_queue: {e}")
         finally:
             self.after(100, self.process_log_queue)
+

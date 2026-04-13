@@ -91,7 +91,6 @@ class DashboardView(ctk.CTkFrame):
             font=ctk.CTkFont(size=14),
         )
         self.logs_box.grid(row=1, column=0, sticky="nsew", padx=16, pady=(0, 16))
-        self.logs_box.insert("1.0", "Main view is ready.\n")
         self.logs_box.configure(state="disabled")
 
     def _handle_start(self):
@@ -114,4 +113,14 @@ class DashboardView(ctk.CTkFrame):
     def clear_logs(self):
         self.logs_box.configure(state="normal")
         self.logs_box.delete("1.0", "end")
+        self.logs_box.configure(state="disabled")
+
+    def load_logs(self, logs):
+        self.logs_box.configure(state="normal")
+        self.logs_box.delete("1.0", "end")
+
+        if logs:
+            self.logs_box.insert("1.0", "\n".join(logs) + "\n")
+
+        self.logs_box.see("end")
         self.logs_box.configure(state="disabled")
