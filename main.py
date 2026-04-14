@@ -26,26 +26,50 @@ def main_loop(stop_event):
     STATS.energia_inicial = read_energy()
     logger.log(f"Starting energy detected: {STATS.energia_inicial}")
 
-    while not stop_event.is_set():
-        if tempo_estourou_stop():
-            logger.log("Max time reached.")
-            break
+    try:
+        while not stop_event.is_set():
+            if tempo_estourou_stop():
+                logger.log("Max time reached.")
+                break
 
-        if tempo_estourou_reset():
-            executar_reset_geral()
+            if tempo_estourou_reset():
+                executar_reset_geral()
 
-        check_error()
-        verify_and_execute()
-        serverc_safety()
-        find_and_click("march.png", region_key="march", confidence=0.30, tries=2)
+            check_error()
 
-    if stop_event.is_set():
-        logger.log("Stopping requested by user.")
+            if stop_event.is_set():
+                break
 
-    logger.log("=========== DATA ===========")
-    STATS.energia_final = read_energy()
-    STATS.close_session()
-    logger.log("Bot finished.")
+            verify_and_execute()
+
+            if stop_event.is_set():
+                break
+
+            serverc_safety()
+
+            if stop_event.is_set():
+                break
+
+            find_and_click("march.png", region_key="march", confidence=0.30, tries=2)
+
+    finally:
+        if stop_event.is_set():
+            logger.log("Stopping requested by user.")
+
+        logger.log("=========== DATA ===========")
+
+        try:
+            STATS.energia_final = read_energy()
+        except Exception as e:
+            logger.log(f"[FINALIZE ERROR] read_energy falhou: {e}")
+            STATS.energia_final = None
+
+        try:
+            STATS.close_session()
+        except Exception as e:
+            logger.log(f"[FINALIZE ERROR] close_session falhou: {e}")
+
+        logger.log("Bot finished.")
 
 
 if __name__ == "__main__":

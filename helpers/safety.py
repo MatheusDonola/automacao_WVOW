@@ -15,7 +15,10 @@ def click_right_corner(margin=40, sleep_after=0.25):
     time.sleep(sleep_after)
 
 
-def serverc_safety():
+def serverc_safety(stop_event=None):
+    if stop_event is not None and stop_event.is_set():
+        return
+
     found = find_exists(
         "serverc.png",
         region_key="serverc",
@@ -23,6 +26,9 @@ def serverc_safety():
         min_conf=0.50,
         pasta="safe"
     )
+
+    if stop_event is not None and stop_event.is_set():
+        return
 
     if found:
         click_right_corner()

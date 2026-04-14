@@ -153,7 +153,7 @@ class App(ctk.CTk):
         if self.stop_event:
             self.stop_event.set()
 
-        self.after(1500, self.ensure_process_stopped)
+        self.after(10000, self.ensure_process_stopped)
 
     def ensure_process_stopped(self):
         if not self.bot_process:
@@ -238,6 +238,16 @@ class App(ctk.CTk):
 
                 while processed < max_per_cycle:
                     message = self.log_queue.get_nowait()
+
+                    if message == "__STATS_START__":
+                        processed += 1
+                        continue
+
+                    if message == "__STATS_END__":
+                        self.append_dashboard_log("==============================")
+                        self.append_dashboard_log("")
+                        processed += 1
+                        continue
 
                     if message == "__BOT_FINISHED__":
                         self.append_dashboard_log("Bot finished.")
