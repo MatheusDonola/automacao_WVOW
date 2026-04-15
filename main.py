@@ -17,7 +17,6 @@ from helpers.mode_3 import mode_3
 import config
 
 logger.DEBUG = config.DEBUG
-active_mode = config.active_mode
 
 def main_loop(stop_event):
     logger.log("=========== INITIALIZING ===========")
@@ -44,14 +43,17 @@ def main_loop(stop_event):
             if stop_event.is_set():
                 break
 
-            if active_mode == "mode_1":
+            if not verify_and_execute():
+                continue
+
+            if config.active_mode == "mode_1":
                 mode_1(stop_event)
-            elif active_mode == "mode_2":
+            elif config.active_mode == "mode_2":
                 mode_2(stop_event)
-            elif active_mode == "mode_3":
+            elif config.active_mode == "mode_3":
                 mode_3(stop_event)
             else:
-                logger.log(f"[MODE ERROR] Modo inválido: {active_mode}")
+                logger.log(f"[MODE ERROR] Modo inválido: {config.active_mode}")
                 break
 
     finally:

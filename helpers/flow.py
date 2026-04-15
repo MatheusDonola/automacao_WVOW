@@ -1,7 +1,6 @@
 import pyautogui
 import time
-
-from config import REGIONS, active_mode
+import config
 
 from helpers.screen import find_and_click, check_error
 from helpers.clicks import click_lizard_center, click_search_center, click_rebel_center
@@ -104,29 +103,28 @@ def cmdcount(region):
     return len(encontrados), encontrados
 
 def verify_and_execute():
-    qtd, encontrados = cmdcount(REGIONS["CMD"])
+    qtd, encontrados = cmdcount(config.REGIONS["CMD"])
     log(f"[CMDCOUNT] qtd={qtd} encontrados={encontrados}")
-    if active_mode == "mode_1":
+
+    if config.active_mode == "mode_1":
         if qtd < 3:
-            log("[FLOW] Entering mainfuct (qtd < 3)")
-            result = mainfuct()
-            log(f"[FLOW] mainfuct returned: {result}")
+            log("[FLOW] Execution allowed for mode_1 (qtd < 3)")
             return True
         else:
-            log("[FLOW] Doesn't go to mainfuct (qtd >= 3). Sleep 1s")
-            time.sleep(0.2)
+            log("[FLOW] Blocked for mode_1 (qtd >= 3). Sleep 1s")
+            time.sleep(1)
             return False
-    elif active_mode == "mode_2" or active_mode == "mode_3":
+
+    elif config.active_mode in ("mode_2", "mode_3"):
         if qtd < 1:
-            log("[FLOW] Entering mainfuct (qtd < 1)")
-            result = mainfuct()
-            log(f"[FLOW] mainfuct returned: {result}")
+            log("[FLOW] Execution allowed for mode_2/mode_3 (qtd < 1)")
             return True
         else:
-            log("[FLOW] Doesn't go to mainfuct (qtd >= 1). Sleep 1s")
-            time.sleep(0.2)
+            log("[FLOW] Blocked for mode_2/mode_3 (qtd >= 1). Sleep 1s")
+            time.sleep(1)
             return False
+
     else:
-        log("No mode selected")
-        return False    
+        log("[FLOW] No valid mode selected")
+        return False
     

@@ -2,12 +2,16 @@ from helpers.screen import find_and_click
 from helpers.safety import serverc_safety
 from helpers.screen import find_image
 from helpers.logger import log
+from helpers.flow import verify_and_execute
+from helpers.timers import executar_reset_geral
 import pyautogui
 import time
 
 def mode_2(stop_event):
     if stop_event.is_set():
         return
+    verify_and_execute()
+
     if not find_and_click(
         "events.png",
         region_key="events",
@@ -45,6 +49,7 @@ def mode_2(stop_event):
     pasta="mode_2"):
         return
     
+    verify_error()
     pyautogui.moveTo(x=945, y=515)
     pyautogui.dragTo(1111, 415, 0.6, button="left")
     find_and_click("summoner2.png", pasta="mode_2", confidence=0.8)
@@ -54,3 +59,21 @@ def mode_2(stop_event):
     time.sleep(0.1)
     find_and_click("march.png", region_key="march", confidence=0.30, tries=5)
     time.sleep(0.5)
+    verify_error()
+
+def verify_error():
+    if find_and_click(
+    "error.png",
+    region_key="error",
+    confidence=0.85,
+    tries=1,
+    retry_delay=0.2,
+    jitter=2,
+    pasta="mode_2"):
+        pyautogui.click(1408, 237)
+        executar_reset_geral()
+        return True
+    
+    else:
+        return False
+
