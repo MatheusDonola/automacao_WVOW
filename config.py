@@ -5,6 +5,7 @@ DEBUG = False
 FIRELIZARD = True
 SPEED_MODE = "FAST"
 active_mode = "mode_2" 
+DRAG_START = None
 
 #====REGIONS=====
 REGIONS = {

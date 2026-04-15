@@ -1,7 +1,7 @@
 import pyautogui
 import time
 
-from config import REGIONS
+from config import REGIONS, active_mode
 
 from helpers.screen import find_and_click, check_error
 from helpers.clicks import click_lizard_center, click_search_center, click_rebel_center
@@ -106,13 +106,27 @@ def cmdcount(region):
 def verify_and_execute():
     qtd, encontrados = cmdcount(REGIONS["CMD"])
     log(f"[CMDCOUNT] qtd={qtd} encontrados={encontrados}")
-
-    if qtd < 3:
-        log("[FLOW] Entrando mainfuct() (qtd < 3)")
-        result = mainfuct()
-        log(f"[FLOW] mainfuct() retornou: {result}")
-        return True
+    if active_mode == "mode_1":
+        if qtd < 3:
+            log("[FLOW] Entering mainfuct (qtd < 3)")
+            result = mainfuct()
+            log(f"[FLOW] mainfuct returned: {result}")
+            return True
+        else:
+            log("[FLOW] Doesn't go to mainfuct (qtd >= 3). Sleep 1s")
+            time.sleep(0.2)
+            return False
+    elif active_mode == "mode_2" or active_mode == "mode_3":
+        if qtd < 1:
+            log("[FLOW] Entering mainfuct (qtd < 1)")
+            result = mainfuct()
+            log(f"[FLOW] mainfuct returned: {result}")
+            return True
+        else:
+            log("[FLOW] Doesn't go to mainfuct (qtd >= 1). Sleep 1s")
+            time.sleep(0.2)
+            return False
     else:
-        log("[FLOW] Não vai pro mainfuct (qtd >= 3). Sleep 1s")
-        time.sleep(0.2)
-        return False
+        log("No mode selected")
+        return False    
+    
