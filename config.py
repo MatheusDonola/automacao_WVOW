@@ -4,6 +4,7 @@ import os
 DEBUG = False
 FIRELIZARD = True
 SPEED_MODE = "FAST"
+active_mode = "mode_2" 
 
 #====REGIONS=====
 REGIONS = {
@@ -22,7 +23,11 @@ REGIONS = {
     "attk":(1242, 664, 131, 47),
     "ENERGY":(94, 201, 200, 44),
     "lupa_click":(1773, 977, 56, 40),
-    "WORLD": (20, 871, 191, 202)
+    "WORLD": (20, 871, 191, 202),
+    "RESET": (757, 619, 375, 105),
+    "events": (1361, 113, 464, 268),
+    "tower": (48, 142, 294, 883),
+    "summoner": (1291, 928, 393, 100)
 }
 
 COORDS = {

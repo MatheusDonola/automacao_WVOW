@@ -5,16 +5,19 @@ from multiprocessing import Event
 from core import state
 from helpers.flow import verify_and_execute
 from helpers.timers import tempo_estourou_stop, tempo_estourou_reset, executar_reset_geral
-from helpers.safety import serverc_safety
+from helpers.safety import serverc_safety, connection_reset
 from helpers.flow import find_and_click
 from helpers.screen import check_error
 from helpers.ocr import read_energy
 from helpers import logger
 from core.statistics import STATS
+from helpers.mode_1 import mode_1
+from helpers.mode_2 import mode_2
+from helpers.mode_3 import mode_3
 import config
 
 logger.DEBUG = config.DEBUG
-
+active_mode = config.active_mode
 
 def main_loop(stop_event):
     logger.log("=========== INITIALIZING ===========")
@@ -36,21 +39,20 @@ def main_loop(stop_event):
                 executar_reset_geral()
 
             check_error()
+            connection_reset(stop_event)
 
             if stop_event.is_set():
                 break
 
-            verify_and_execute()
-
-            if stop_event.is_set():
+            if active_mode == "mode_1":
+                mode_1(stop_event)
+            elif active_mode == "mode_2":
+                mode_2(stop_event)
+            elif active_mode == "mode_3":
+                mode_3(stop_event)
+            else:
+                logger.log(f"[MODE ERROR] Modo inválido: {active_mode}")
                 break
-
-            serverc_safety()
-
-            if stop_event.is_set():
-                break
-
-            find_and_click("march.png", region_key="march", confidence=0.30, tries=2)
 
     finally:
         if stop_event.is_set():

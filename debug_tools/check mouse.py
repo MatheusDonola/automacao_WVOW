@@ -11,3 +11,4 @@ def mouse_pos():
         print("\nParado.")
 
 mouse_pos()
+

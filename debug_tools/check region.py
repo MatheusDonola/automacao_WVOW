@@ -1,8 +1,8 @@
 import os, time
 import pyautogui
 
-img = r"D:\VSCODE PASTAS\AutomacaoVow\assets\bsfuctpath\attk.png"
-REGIAO_TESTE = (1292, 707, 222, 40)
+img = r"D:\VSCODE PASTAS\AutomacaoVow\assets\mode_2\summoner.png"
+REGIAO_TESTE = (1291, 928, 393, 100)
 
 print("=======INICIANDO DEBUG REGION========")
 time.sleep(1)
