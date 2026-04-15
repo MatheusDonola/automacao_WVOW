@@ -11,3 +11,6 @@ def mouse_pos():
         print("\nParado.")
 
 mouse_pos()
+
+x=1623, y=303
+x=134, y=958

@@ -5,7 +5,7 @@ from multiprocessing import Event
 from core import state
 from helpers.flow import verify_and_execute
 from helpers.timers import tempo_estourou_stop, tempo_estourou_reset, executar_reset_geral
-from helpers.safety import serverc_safety
+from helpers.safety import serverc_safety, connection_reset
 from helpers.flow import find_and_click
 from helpers.screen import check_error
 from helpers.ocr import read_energy
@@ -36,6 +36,7 @@ def main_loop(stop_event):
                 executar_reset_geral()
 
             check_error()
+            connection_reset(stop_event)
 
             if stop_event.is_set():
                 break
