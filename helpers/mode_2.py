@@ -49,17 +49,19 @@ def mode_2(stop_event):
     pasta="mode_2"):
         return
     
-    verify_error()
+    if verify_error():
+        return
     pyautogui.moveTo(x=945, y=515)
-    pyautogui.dragTo(1111, 415, 0.6, button="left")
+    pyautogui.dragTo(1348, 244, 0.5, button="left")
     find_and_click("summoner2.png", pasta="mode_2", confidence=0.8)
-    pyautogui.click(1111, 415)
+    pyautogui.click(1348, 244)
     time.sleep(0.2)
     find_and_click("rally.png", pasta="mode_2", confidence=0.8)
     time.sleep(0.1)
     find_and_click("march.png", region_key="march", confidence=0.30, tries=5)
     time.sleep(0.5)
-    verify_error()
+    if verify_error():
+        return
 
 def verify_error():
     if find_and_click(

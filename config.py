@@ -42,8 +42,8 @@ COORDS = {
 }
 
 # ===== TEMPOS =====
-TEMPO_STOP = 3600 #3600 por hora
-TEMPO_RESET = 600  #450 padrão ~ 7,5 min
+TEMPO_STOP = 7200 #3600 por hora
+TEMPO_RESET = 450  #450 padrão ~ 7,5 min
 
 # ===== COMPORTAMENTO =====
 ATAQUE_RAILGUN = False
