@@ -16,6 +16,8 @@ class Statistics:
         self.green_book = 0
         self.materials = 0
 
+        self.game_crashes = 0
+
 
     def energia_gasta(self):
         if self.energia_inicial is None or self.energia_final is None:
@@ -23,6 +25,9 @@ class Statistics:
             return None
 
         return self.energia_inicial - self.energia_final
+    
+    def add_game_crash(self):
+        self.game_crashes += 1
 
 
     def rallies_feitos(self):
@@ -66,6 +71,6 @@ class Statistics:
         log(f"Premium cards: {self.premium_card}")
         log(f"Advanced chests: {self.advanced_chest}")
         log(f"Materials: {self.materials}")
-
+        log(f"Number of game crashes: {self.game_crashes}")
 
 STATS = Statistics()

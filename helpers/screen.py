@@ -129,17 +129,3 @@ def check_error(
 
     return True
 
-def capture_click_position():
-    clicked_position = {"x": None, "y": None}
-
-    def on_click(x, y, button, pressed):
-        if pressed:
-            clicked_position["x"] = x
-            clicked_position["y"] = y
-            logger.log(f"Clique capturado em x={x}, y={y}")
-            return False
-
-    with mouse.Listener(on_click=on_click) as listener:
-        listener.join()
-
-    return clicked_position["x"], clicked_position["y"]

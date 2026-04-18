@@ -27,10 +27,12 @@ def tempo_estourou_reset():
 def marca_reset_agora():
     STATE["evento_reset"] = time.time()
 
-def executar_reset_geral(timeout = 25):
+def executar_reset_geral(timeout = 45):
     log("Executing cache reset")
     x, y = COORDS["RESET"]
 
+    pyautogui.click(x, y)
+    time.sleep(1)
     pyautogui.click(x, y)
     time.sleep(1)
     pyautogui.click(x, y)
@@ -47,9 +49,19 @@ def executar_reset_geral(timeout = 25):
                 log("Reset correctly finalized")
                 sleep_speed(10)
                 return True
+    certify_reset()
+    return True
 
-    pyautogui.click(x, y)
-    sleep_speed(10)
-    marca_reset_agora()
-    log("Reset finalized by fallback")
-    return False
+def certify_reset():
+    if find_image("campaign.png", region_key="campaign", confidence=0.85, pasta="imagens"):
+        log("activating fallback")
+        time.sleep(2)
+        x, y = COORDS["RESET"]
+        pyautogui.click(x, y)
+        time.sleep(3)
+        if not find_image("campaign.png", region_key="campaign", confidence=0.85, pasta="imagens"):
+            log("fallback success")
+            return True
+        else:
+            log("recursion activate")
+            certify_reset()

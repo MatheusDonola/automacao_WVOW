@@ -1,10 +1,11 @@
 from helpers.screen import find_and_click
 from helpers.safety import serverc_safety
-from helpers.flow import verify_and_execute, mainfuct
+from helpers.flow import verify_and_execute, mainfuct, verify_crash
 
 
 
 def mode_1(stop_event):
+    verify_crash()
     verify_and_execute()
 
     if stop_event.is_set():

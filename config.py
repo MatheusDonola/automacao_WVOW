@@ -3,7 +3,7 @@ import os
 #==== CONFIG ====
 DEBUG = False
 FIRELIZARD = True
-SPEED_MODE = "FAST"
+SPEED_MODE = "NORMAL"
 active_mode = "mode_1" 
 DRAG_START = None
 
@@ -29,7 +29,9 @@ REGIONS = {
     "events": (1361, 113, 464, 268),
     "tower": (48, 142, 294, 883),
     "summoner": (1291, 928, 393, 100),
-    "error": (1720, 36, 110, 78)
+    "error": (1720, 36, 110, 78),
+    "campaign": (1648, 864, 214, 178),
+    "display": (657, 114, 565, 787)
 }
 
 COORDS = {
@@ -42,7 +44,7 @@ COORDS = {
 }
 
 # ===== TEMPOS =====
-TEMPO_STOP = 13000 #3600 por hora
+TEMPO_STOP = 10000 #3600 por hora
 TEMPO_RESET = 600  #450 padrão ~ 7,5 min
 
 # ===== COMPORTAMENTO =====

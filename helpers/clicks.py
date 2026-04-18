@@ -1,6 +1,8 @@
 import pyautogui
 import time
 import random
+from pynput.mouse import Listener, mouse
+from helpers import logger
 from config import REGIONS, COORDS
 
 def click_search_center(delay_before=0.5, jitter=6):
@@ -51,3 +53,18 @@ def click_rebel_center(delay_before=0.5, jitter=8):
 
     pyautogui.click(x, y)
     time.sleep(0.1)
+
+def capture_click_position():
+    clicked_position = {"x": None, "y": None}
+
+    def on_click(x, y, button, pressed):
+        if pressed:
+            clicked_position["x"] = x
+            clicked_position["y"] = y
+            logger.log(f"Clique capturado em x={x}, y={y}")
+            return False
+
+    with mouse.Listener(on_click=on_click) as listener:
+        listener.join()
+
+    return clicked_position["x"], clicked_position["y"]

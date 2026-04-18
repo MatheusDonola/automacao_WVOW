@@ -8,6 +8,7 @@ from helpers.paths import img_path
 from helpers.screen import find_exists, check_error
 from helpers.clicks import click_region
 from core.statistics import STATS
+from helpers.timers import certify_reset
 from helpers.logger import log, debug
 import config
 
@@ -128,3 +129,24 @@ def verify_and_execute():
         log("[FLOW] No valid mode selected")
         return False
     
+def back_to_back():
+    time.sleep(70)
+    x, y = config.COORDS["RESET"]
+    pyautogui.click(x, y)
+    time.sleep(0.5)
+    pyautogui.click(x, y)
+    time.sleep(0.5)
+    pyautogui.click(x, y)
+    certify_reset()
+    return True
+
+
+
+def verify_crash():
+    if find_and_click("warvow_icon.png", region_key="display",pasta="imagens", confidence=0.85, tries=1):
+        log("Game crash detected, initializing full reset...")
+        back_to_back()
+        STATS.add_game_crash()
+        time.sleep(2)
+        log("full reset complete")
+        return True
