@@ -1,6 +1,6 @@
 from helpers.screen import find_and_click
 from helpers.safety import serverc_safety
-from helpers.flow import verify_and_execute
+from helpers.flow import verify_and_execute, mainfuct
 
 
 
@@ -9,6 +9,8 @@ def mode_1(stop_event):
 
     if stop_event.is_set():
         return
+
+    mainfuct()
 
     serverc_safety()
 

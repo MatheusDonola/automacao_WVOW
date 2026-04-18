@@ -28,7 +28,7 @@ def sleep_speed2(delay):
         time.sleep(delay)
 
 def mainfuct():
-    if not find_exists("lupa.png", region_key="lupa", start_conf=0.5, min_conf=0.3):
+    if not find_exists("lupa.png", region_key="lupa", start_conf=0.8, min_conf=0.5):
         check_error()
         return False
 

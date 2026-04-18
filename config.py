@@ -4,7 +4,7 @@ import os
 DEBUG = False
 FIRELIZARD = True
 SPEED_MODE = "FAST"
-active_mode = "mode_2" 
+active_mode = "mode_1" 
 DRAG_START = None
 
 #====REGIONS=====
@@ -42,8 +42,8 @@ COORDS = {
 }
 
 # ===== TEMPOS =====
-TEMPO_STOP = 7200 #3600 por hora
-TEMPO_RESET = 450  #450 padrão ~ 7,5 min
+TEMPO_STOP = 13000 #3600 por hora
+TEMPO_RESET = 600  #450 padrão ~ 7,5 min
 
 # ===== COMPORTAMENTO =====
 ATAQUE_RAILGUN = False
