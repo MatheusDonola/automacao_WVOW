@@ -4,7 +4,7 @@ import os
 DEBUG = False
 FIRELIZARD = True
 SPEED_MODE = "NORMAL"
-active_mode = "mode_1" 
+active_mode = "mode_2" 
 DRAG_START = None
 
 #====REGIONS=====
@@ -31,7 +31,9 @@ REGIONS = {
     "summoner": (1291, 928, 393, 100),
     "error": (1720, 36, 110, 78),
     "campaign": (1648, 864, 214, 178),
-    "display": (657, 114, 565, 787)
+    "display": (657, 114, 565, 787),
+    "railgun": (60, 156, 112, 882),
+    "SUM_RAIL": (1438, 865, 343, 92)
 }
 
 COORDS = {
@@ -43,8 +45,14 @@ COORDS = {
     "REBEL":(943,523)
 }
 
+MODE_2_DRAG = {
+    "end_x": 718,
+    "end_y": 395,
+    "duration": 0.5
+}
+
 # ===== TEMPOS =====
-TEMPO_STOP = 10000 #3600 por hora
+TEMPO_STOP = 5000 #3600 por hora
 TEMPO_RESET = 600  #450 padrão ~ 7,5 min
 
 # ===== COMPORTAMENTO =====

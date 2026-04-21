@@ -6,7 +6,9 @@ import customtkinter as ctk
 from gui.sidebar_view import SidebarView
 from gui.dashboard_view import DashboardView
 from gui.config_view import ConfigView
+from gui.tower_siegeView import TowerSiegeView
 from bot_runner import run_bot
+from helpers.clicks import capture_and_save_drag
 
 
 class App(ctk.CTk):
@@ -50,7 +52,6 @@ class App(ctk.CTk):
     def change_theme(self, theme_name):
         ctk.set_appearance_mode(theme_name.lower())
 
-
     def change_view(self, view_name):
         if self.current_view is not None:
             self.current_view.destroy()
@@ -69,6 +70,14 @@ class App(ctk.CTk):
 
         if view_name == "settings":
             self.current_view = ConfigView(self.main_container)
+            self.current_view.grid(row=0, column=0, sticky="nsew", padx=20, pady=20)
+            return
+
+        if view_name == "tower_siege":
+            self.current_view = TowerSiegeView(
+                self.main_container,
+                on_set_spawn=self.set_tower_spawn,
+            )
             self.current_view.grid(row=0, column=0, sticky="nsew", padx=20, pady=20)
             return
 
@@ -105,6 +114,37 @@ class App(ctk.CTk):
             justify="left",
         )
         subtitle_label.grid(row=1, column=0, sticky="nw")
+
+    def set_tower_spawn(self):
+        self.append_dashboard_log("Opening Tower Siege spawn capture...")
+
+        if isinstance(self.current_view, TowerSiegeView):
+            try:
+                self.current_view.set_status("Click on the tower spawn point...")
+            except Exception:
+                pass
+
+        try:
+            end_x, end_y = capture_and_save_drag("MODE_2_DRAG", duration=0.5)
+
+            message = f"Tower spawn saved successfully: x={end_x}, y={end_y}"
+            self.append_dashboard_log(message)
+
+            if isinstance(self.current_view, TowerSiegeView):
+                try:
+                    self.current_view.set_status(message)
+                except Exception:
+                    pass
+
+        except Exception as e:
+            error_message = f"Error while saving tower spawn: {e}"
+            self.append_dashboard_log(error_message)
+
+            if isinstance(self.current_view, TowerSiegeView):
+                try:
+                    self.current_view.set_status(error_message)
+                except Exception:
+                    pass
 
     def append_dashboard_log(self, message):
         self.dashboard_logs.append(message)
@@ -263,4 +303,3 @@ class App(ctk.CTk):
             print(f"[GUI ERROR] process_log_queue: {e}")
         finally:
             self.after(100, self.process_log_queue)
-

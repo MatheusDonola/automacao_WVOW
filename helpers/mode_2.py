@@ -4,6 +4,7 @@ from helpers.screen import find_image
 from helpers.logger import log
 from helpers.flow import verify_and_execute, verify_crash
 from helpers.timers import executar_reset_geral
+from config import MODE_2_DRAG
 import pyautogui
 import time
 
@@ -53,7 +54,12 @@ def mode_2(stop_event):
     if verify_error():
         return
     pyautogui.moveTo(x=945, y=515)
-    pyautogui.dragTo(1348, 244, 0.5, button="left")
+    pyautogui.dragTo(
+        MODE_2_DRAG["end_x"],
+        MODE_2_DRAG["end_y"],
+        MODE_2_DRAG["duration"],
+        button="left"
+    )
     find_and_click("summoner2.png", pasta="mode_2", confidence=0.8)
     pyautogui.click(1348, 244)
     time.sleep(0.2)

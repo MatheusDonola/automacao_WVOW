@@ -66,6 +66,14 @@ class SidebarView(ctk.CTkFrame):
         )
         self.stats_button.grid(row=5, column=0, padx=18, pady=(0, 12), sticky="ew")
 
+        self.tower_siege_button = ctk.CTkButton(
+            self,
+            text="Tower Siege",
+            height=button_height,
+            command=lambda: self._handle_nav("tower_siege"),
+        )
+        self.tower_siege_button.grid(row=6, column=0, padx=18, pady=(0, 12), sticky="ew")
+
         self.theme_menu = ctk.CTkOptionMenu(
             self,
             values=["Dark", "Light", "System"],
