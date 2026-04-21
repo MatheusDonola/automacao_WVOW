@@ -1,6 +1,5 @@
 import pyautogui
 import time
-import config
 
 from helpers.screen import find_and_click, check_error
 from helpers.clicks import click_lizard_center, click_search_center, click_rebel_center
@@ -82,7 +81,7 @@ def cmdcount(region):
 
     encontrados = []
 
-    for i in range(1, 4):
+    for i in range(1, 5):
         path = cmd_path(f"cmd{i}.png")
 
         if DEBUG_CMD:

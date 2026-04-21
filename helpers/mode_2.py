@@ -7,6 +7,7 @@ from helpers.timers import executar_reset_geral
 from config import MODE_2_DRAG
 import pyautogui
 import time
+from core.statistics import STATS
 
 def mode_2(stop_event):
     if stop_event.is_set():
@@ -61,11 +62,12 @@ def mode_2(stop_event):
         button="left"
     )
     find_and_click("summoner2.png", pasta="mode_2", confidence=0.8)
-    pyautogui.click(1348, 244)
+    pyautogui.click(x=MODE_2_DRAG["end_x"], y=MODE_2_DRAG["end_y"])
     time.sleep(0.2)
     find_and_click("rally.png", pasta="mode_2", confidence=0.8)
     time.sleep(0.1)
-    find_and_click("march.png", region_key="march", confidence=0.30, tries=5)
+    if find_and_click("march.png", region_key="march", confidence=0.30, tries=5):
+        STATS.tower_siege += 1
     time.sleep(0.5)
     if verify_error():
         return

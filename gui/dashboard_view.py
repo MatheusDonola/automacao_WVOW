@@ -2,13 +2,15 @@ import customtkinter as ctk
 
 
 class DashboardView(ctk.CTkFrame):
-    def __init__(self, master, on_start=None, on_stop=None):
+    def __init__(self, master, on_start, on_stop, on_mode_change, mode_value):
         super().__init__(master, corner_radius=0)
 
         self.on_start = on_start
         self.on_stop = on_stop
+        self.on_mode_change = on_mode_change
 
         self.status_var = ctk.StringVar(value="Status: stopped")
+        self.mode_var = ctk.StringVar(value=mode_value)
 
         self._build_layout()
 
@@ -53,6 +55,16 @@ class DashboardView(ctk.CTkFrame):
         )
         self.status_label.grid(row=2, column=0, sticky="w")
 
+        self.mode_menu = ctk.CTkOptionMenu(
+            self.actions_frame,
+            values=["mode_1", "mode_2", "mode_3"],
+            variable=self.mode_var,
+            command=self._handle_mode_change,
+            width=130,
+            height=48,
+        )
+        self.mode_menu.grid(row=0, column=0, padx=(0, 12), pady=(8, 0))
+
         self.start_button = ctk.CTkButton(
             self.actions_frame,
             text="Start Bot",
@@ -60,7 +72,7 @@ class DashboardView(ctk.CTkFrame):
             height=48,
             command=self._handle_start,
         )
-        self.start_button.grid(row=0, column=0, padx=(0, 12), pady=(8, 0))
+        self.start_button.grid(row=0, column=1, padx=(0, 12), pady=(8, 0))
 
         self.stop_button = ctk.CTkButton(
             self.actions_frame,
@@ -69,7 +81,7 @@ class DashboardView(ctk.CTkFrame):
             height=48,
             command=self._handle_stop,
         )
-        self.stop_button.grid(row=0, column=1, pady=(8, 0))
+        self.stop_button.grid(row=0, column=2, pady=(8, 0))
 
         self.logs_frame = ctk.CTkFrame(self)
         self.logs_frame.grid(row=1, column=0, sticky="nsew", padx=20, pady=(0, 20))
@@ -101,8 +113,15 @@ class DashboardView(ctk.CTkFrame):
         if self.on_stop:
             self.on_stop()
 
+    def _handle_mode_change(self, selected_mode):
+        if self.on_mode_change:
+            self.on_mode_change(selected_mode)
+
     def set_status(self, text):
         self.status_var.set(text)
+
+    def set_mode(self, mode_name):
+        self.mode_var.set(mode_name)
 
     def append_log(self, message):
         self.logs_box.configure(state="normal")

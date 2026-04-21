@@ -1,10 +1,12 @@
 import os
+import re
+from pathlib import Path
 
 #==== CONFIG ====
 DEBUG = False
 FIRELIZARD = True
 SPEED_MODE = "NORMAL"
-active_mode = "mode_2" 
+active_mode = "mode_2"
 DRAG_START = None
 
 #====REGIONS=====
@@ -52,7 +54,7 @@ MODE_2_DRAG = {
 }
 
 # ===== TEMPOS =====
-TEMPO_STOP = 5000 #3600 por hora
+TEMPO_STOP = 10000 #3600 por hora
 TEMPO_RESET = 600  #450 padrão ~ 7,5 min
 
 # ===== COMPORTAMENTO =====
@@ -64,3 +66,22 @@ DELAY_BACK = 0.6
 CONF_DEFAULT = 0.45
 CONF_RALLY = 0.30
 
+def update_config_value(key: str, value: str) -> None:
+    config_path = Path(__file__).resolve()
+
+    content = config_path.read_text(encoding="utf-8")
+
+    pattern = rf"^{key}\s*=.*$"
+    replacement = f"{key} = {value}"
+
+    new_content, count = re.subn(
+        pattern,
+        replacement,
+        content,
+        flags=re.MULTILINE
+    )
+
+    if count == 0:
+        raise ValueError(f"Chave '{key}' não encontrada no config.py")
+
+    config_path.write_text(new_content, encoding="utf-8")

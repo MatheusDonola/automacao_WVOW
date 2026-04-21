@@ -2,7 +2,9 @@ from multiprocessing import Process, Event, Queue
 from queue import Empty
 
 import customtkinter as ctk
+import config
 
+from config import update_config_value
 from gui.sidebar_view import SidebarView
 from gui.dashboard_view import DashboardView
 from gui.config_view import ConfigView
@@ -28,6 +30,7 @@ class App(ctk.CTk):
 
         self.dashboard_logs = ["Main view is ready."]
         self.dashboard_status = "Status: stopped"
+        self.dashboard_mode = getattr(config, "active_mode", "mode_2")
 
         self.grid_columnconfigure(1, weight=1)
         self.grid_rowconfigure(0, weight=1)
@@ -61,11 +64,16 @@ class App(ctk.CTk):
                 self.main_container,
                 on_start=self.start_bot,
                 on_stop=self.stop_bot,
+                on_mode_change=self.change_active_mode,
+                mode_value=self.dashboard_mode,
             )
             self.current_view.grid(row=0, column=0, sticky="nsew")
 
             self.current_view.set_status(self.dashboard_status)
             self.current_view.load_logs(self.dashboard_logs)
+
+            if hasattr(self.current_view, "set_mode"):
+                self.current_view.set_mode(self.dashboard_mode)
             return
 
         if view_name == "settings":
@@ -158,6 +166,34 @@ class App(ctk.CTk):
         if isinstance(self.current_view, DashboardView):
             self.current_view.set_status(message)
 
+    def set_dashboard_mode(self, mode_name):
+        self.dashboard_mode = mode_name
+
+        if isinstance(self.current_view, DashboardView) and hasattr(self.current_view, "set_mode"):
+            self.current_view.set_mode(mode_name)
+
+    def change_active_mode(self, mode_name):
+        valid_modes = {"mode_1", "mode_2", "mode_3"}
+
+        if mode_name not in valid_modes:
+            self.append_dashboard_log(f"Invalid mode selected: {mode_name}")
+            self.set_dashboard_mode(self.dashboard_mode)
+            return
+
+        if self.bot_process is not None and self.bot_process.is_alive():
+            self.append_dashboard_log("Stop the bot before changing the mode.")
+            self.set_dashboard_mode(self.dashboard_mode)
+            return
+
+        try:
+            update_config_value("active_mode", f'"{mode_name}"')
+            config.active_mode = mode_name
+            self.set_dashboard_mode(mode_name)
+            self.append_dashboard_log(f"Active mode updated to {mode_name}.")
+        except Exception as e:
+            self.append_dashboard_log(f"Error updating active mode: {e}")
+            self.set_dashboard_mode(getattr(config, "active_mode", "mode_2"))
+
     def start_bot(self):
         self.force_cleanup_previous_process()
 
@@ -167,7 +203,7 @@ class App(ctk.CTk):
             return
 
         self.set_dashboard_status("Status: starting...")
-        self.append_dashboard_log("Starting bot process...")
+        self.append_dashboard_log(f"Starting bot process in {self.dashboard_mode}...")
 
         self.stop_event = Event()
         self.log_queue = Queue()

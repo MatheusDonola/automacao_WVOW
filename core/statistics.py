@@ -1,8 +1,8 @@
 from helpers.logger import log
 from config import FIRELIZARD
 
-class Statistics:
 
+class Statistics:
     def __init__(self):
         self.start_time = None
         self.end_time = None
@@ -15,9 +15,8 @@ class Statistics:
         self.advanced_chest = 0
         self.green_book = 0
         self.materials = 0
-
+        self.tower_siege = 0
         self.game_crashes = 0
-
 
     def energia_gasta(self):
         if self.energia_inicial is None or self.energia_final is None:
@@ -25,10 +24,9 @@ class Statistics:
             return None
 
         return self.energia_inicial - self.energia_final
-    
+
     def add_game_crash(self):
         self.game_crashes += 1
-
 
     def rallies_feitos(self):
         energia = self.energia_gasta()
@@ -58,7 +56,7 @@ class Statistics:
             "advanced_chest": self.advanced_chest,
             "materials": self.materials
         }
-        
+
     def close_session(self):
         self.rallies_feitos()
         self.loot_taken()
@@ -72,5 +70,7 @@ class Statistics:
         log(f"Advanced chests: {self.advanced_chest}")
         log(f"Materials: {self.materials}")
         log(f"Number of game crashes: {self.game_crashes}")
+        log(f"Tower Siege completed {self.tower_siege}")
+
 
 STATS = Statistics()
