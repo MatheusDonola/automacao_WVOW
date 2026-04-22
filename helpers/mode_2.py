@@ -51,9 +51,10 @@ def mode_2(stop_event):
     jitter=2,
     pasta="mode_2"):
         return
-    
+
     if verify_error():
         return
+    
     pyautogui.moveTo(x=945, y=515)
     pyautogui.dragTo(
         MODE_2_DRAG["end_x"],
@@ -62,6 +63,9 @@ def mode_2(stop_event):
         button="left"
     )
     find_and_click("summoner2.png", pasta="mode_2", confidence=0.8)
+    time.sleep(0.5)
+    if check_unable(stop_event):
+        return
     pyautogui.click(x=MODE_2_DRAG["end_x"], y=MODE_2_DRAG["end_y"])
     time.sleep(0.2)
     find_and_click("rally.png", pasta="mode_2", confidence=0.8)
@@ -88,3 +92,10 @@ def verify_error():
     else:
         return False
 
+def check_unable(stop_event):
+    if find_image("Unable.png", region_key="Unable", confidence=0.65, pasta="mode_2"):
+        log("Unable detected, coordinates invalid to spwan the tower - stopping bot")
+        stop_event.set()
+        return True
+
+    return False

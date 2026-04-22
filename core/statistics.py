@@ -1,6 +1,6 @@
 from helpers.logger import log
 from config import FIRELIZARD
-
+import config
 
 class Statistics:
     def __init__(self):
@@ -58,19 +58,27 @@ class Statistics:
         }
 
     def close_session(self):
+        if config.active_mode == "mode_1":
+            log(f"Starting energy: {self.energia_inicial}")
+            log(f"Final energy: {self.energia_final}")
+            log(f"Energy Spent: {self.energia_gasta()}")
+            log(f"Successful Rallys: {self.rallies_sucesso}")
+            log(f"Green books: {self.green_book}")
+            log(f"Premium cards: {self.premium_card}")
+            log(f"Advanced chests: {self.advanced_chest}")
+            log(f"Materials: {self.materials}")
+            log(f"Number of game crashes: {self.game_crashes}")
+            return True
+        elif config.active_mode == "mode_2":
+            log(f"Tower Siege completed {self.tower_siege}")
+            log("Number of game crashes: {self.game_crashes}")
+        elif config.active_mode == "mode_3":
+            return
         self.rallies_feitos()
         self.loot_taken()
 
-        log(f"Starting energy: {self.energia_inicial}")
-        log(f"Final energy: {self.energia_final}")
-        log(f"Energy Spent: {self.energia_gasta()}")
-        log(f"Successful Rallys: {self.rallies_sucesso}")
-        log(f"Green books: {self.green_book}")
-        log(f"Premium cards: {self.premium_card}")
-        log(f"Advanced chests: {self.advanced_chest}")
-        log(f"Materials: {self.materials}")
-        log(f"Number of game crashes: {self.game_crashes}")
-        log(f"Tower Siege completed {self.tower_siege}")
+        
+        
 
 
 STATS = Statistics()

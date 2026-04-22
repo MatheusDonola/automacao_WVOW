@@ -35,7 +35,8 @@ REGIONS = {
     "campaign": (1648, 864, 214, 178),
     "display": (657, 114, 565, 787),
     "railgun": (60, 156, 112, 882),
-    "SUM_RAIL": (1438, 865, 343, 92)
+    "SUM_RAIL": (1438, 865, 343, 92),
+    "Unable": (702, 293, 187, 79)
 }
 
 COORDS = {
@@ -48,13 +49,13 @@ COORDS = {
 }
 
 MODE_2_DRAG = {
-    "end_x": 718,
-    "end_y": 395,
+    "end_x": 1243,
+    "end_y": 192,
     "duration": 0.5
 }
 
 # ===== TEMPOS =====
-TEMPO_STOP = 10000 #3600 por hora
+TEMPO_STOP = 12000 #3600 por hora
 TEMPO_RESET = 600  #450 padrão ~ 7,5 min
 
 # ===== COMPORTAMENTO =====
