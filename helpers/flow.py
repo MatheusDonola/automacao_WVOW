@@ -74,7 +74,6 @@ def mainfuct():
     if not check_error():
         return "falha no rally" 
 
-
 def cmdcount(region):
     if DEBUG_CMD:
         debug(f"[DEBUG] cmdcount chamado com região = {region}")
@@ -139,8 +138,6 @@ def back_to_back():
     certify_reset()
     return True
 
-
-
 def verify_crash():
     if find_and_click("warvow_icon.png", region_key="display",pasta="imagens", confidence=0.85, tries=1):
         log("Game crash detected, initializing full reset...")
@@ -149,3 +146,9 @@ def verify_crash():
         time.sleep(2)
         log("full reset complete")
         return True
+    
+def help_module():
+    if find_and_click("help.png", region_key="help",pasta="imagens", confidence=0.85, tries=1):
+        return True
+    else:
+        return False

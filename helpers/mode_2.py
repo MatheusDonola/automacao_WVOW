@@ -2,7 +2,7 @@ from helpers.screen import find_and_click
 from helpers.safety import serverc_safety
 from helpers.screen import find_image
 from helpers.logger import log
-from helpers.flow import verify_and_execute, verify_crash
+from helpers.flow import verify_and_execute, verify_crash, help_module
 from helpers.timers import executar_reset_geral
 from config import MODE_2_DRAG
 import pyautogui
@@ -14,6 +14,7 @@ def mode_2(stop_event):
         return
     verify_crash()
     verify_and_execute()
+    help_module()
 
     if not find_and_click(
         "events.png",
@@ -75,6 +76,7 @@ def mode_2(stop_event):
     time.sleep(0.5)
     if verify_error():
         return
+    help_module()
 
 def verify_error():
     if find_and_click(

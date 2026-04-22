@@ -1,4 +1,3 @@
-import os
 import re
 from pathlib import Path
 
@@ -36,7 +35,8 @@ REGIONS = {
     "display": (657, 114, 565, 787),
     "railgun": (60, 156, 112, 882),
     "SUM_RAIL": (1438, 865, 343, 92),
-    "Unable": (702, 293, 187, 79)
+    "Unable": (702, 293, 187, 79),
+    "help": (729, 790, 510, 108)
 }
 
 COORDS = {

@@ -3,7 +3,7 @@ import time
 from multiprocessing import Event
 
 from core import state
-from helpers.flow import verify_and_execute
+from helpers.flow import verify_and_execute, help_module
 from helpers.timers import tempo_estourou_stop, tempo_estourou_reset, executar_reset_geral
 from helpers.safety import serverc_safety, connection_reset
 from helpers.flow import find_and_click
@@ -42,6 +42,8 @@ def main_loop(stop_event):
 
             if stop_event.is_set():
                 break
+
+            help_module()
 
             if not verify_and_execute():
                 continue
