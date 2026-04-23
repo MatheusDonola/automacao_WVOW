@@ -74,6 +74,14 @@ class SidebarView(ctk.CTkFrame):
         )
         self.tower_siege_button.grid(row=6, column=0, padx=18, pady=(0, 12), sticky="ew")
 
+        self.commanders_button = ctk.CTkButton(
+        self,
+        text="Commanders",
+        command=lambda: self.on_nav_change("commanders"),
+        height=48,
+            )
+        self.commanders_button.grid(row=7, column=0, padx=20, pady=(0, 12), sticky="ew")
+
         self.theme_menu = ctk.CTkOptionMenu(
             self,
             values=["Dark", "Light", "System"],

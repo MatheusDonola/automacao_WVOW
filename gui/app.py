@@ -4,6 +4,7 @@ from queue import Empty
 import customtkinter as ctk
 import config
 
+from gui.commanders_view import CommandersView
 from config import update_config_value
 from gui.sidebar_view import SidebarView
 from gui.dashboard_view import DashboardView
@@ -86,6 +87,11 @@ class App(ctk.CTk):
                 self.main_container,
                 on_set_spawn=self.set_tower_spawn,
             )
+            self.current_view.grid(row=0, column=0, sticky="nsew", padx=20, pady=20)
+            return
+
+        if view_name == "commanders":
+            self.current_view = CommandersView(self.main_container)
             self.current_view.grid(row=0, column=0, sticky="nsew", padx=20, pady=20)
             return
 
